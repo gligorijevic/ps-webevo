@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="webevo" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>webevo</jta-data-source>
+    <class>model.users.Client</class>
+    <class>model.corpus.TaggedSentence</class>
+    <class>model.corpus.Corpus</class>
+    <class>model.users.Expert</class>
+    <class>model.users.User</class>
+    <class>model.website.Website</class>
+    <class>model.website.HtmlPage</class>
+    <class>model.users.Speciality</class>
+    <class>model.website.HtmlTagAttribute</class>
+    <class>model.website.HtmlTag</class>
+    <class>model.website.PairedHtmlTag</class>
+    <class>model.website.HtmlTagText</class>
+    <class>model.website.UnpairedHtmlTag</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/webevo?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>
