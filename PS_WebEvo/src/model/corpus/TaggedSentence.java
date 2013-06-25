@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TaggedSentence.findByTaggedSentenceId", query = "SELECT t FROM TaggedSentence t WHERE t.taggedSentenceId = :taggedSentenceId"),
     @NamedQuery(name = "TaggedSentence.findBySentence", query = "SELECT t FROM TaggedSentence t WHERE t.sentence = :sentence"),
     @NamedQuery(name = "TaggedSentence.findByTags", query = "SELECT t FROM TaggedSentence t WHERE t.tags = :tags")})
-public class TaggedSentence implements Serializable {
+public class TaggedSentence implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -149,4 +150,47 @@ public class TaggedSentence implements Serializable {
 //    public void setTagsSplitted(List<String> tagsSplitted) {
 //        this.tagsSplitted = tagsSplitted;
 //    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "TaggedSentence";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "taggedsentence";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.corpusId = ((TaggedSentence)gdo).getCorpusId();
+        this.sentence = ((TaggedSentence)gdo).getSentence();
+        this.taggedSentenceId = ((TaggedSentence)gdo).getTaggedSentenceId();
+        this.tags = ((TaggedSentence)gdo).getTags();
+    }
+
+    @Override
+    public Object vratiID() {
+        return taggedSentenceId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.taggedSentenceId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(taggedSentenceId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New TaggedSentence";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "TaggedSentence";
+    }
 }

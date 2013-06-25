@@ -21,6 +21,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -35,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Website.findByWebsiteName", query = "SELECT w FROM Website w WHERE w.websiteName = :websiteName"),
     @NamedQuery(name = "Website.findByWebsiteDescription", query = "SELECT w FROM Website w WHERE w.websiteDescription = :websiteDescription"),
     @NamedQuery(name = "Website.findByWebsiteUrl", query = "SELECT w FROM Website w WHERE w.websiteUrl = :websiteUrl")})
-public class Website implements Serializable {
+public class Website implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -135,5 +136,49 @@ public class Website implements Serializable {
     @Override
     public String toString() {
         return websiteName;
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "Website";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "website";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.websiteId = ((Website)gdo).getWebsiteId();
+        this.websiteName = ((Website)gdo).getWebsiteName();
+        this.websiteDescription = ((Website)gdo).getWebsiteDescription();
+        this.websiteUrl = ((Website)gdo).getWebsiteUrl();
+        this.htmlPageList = ((Website)gdo).getHtmlPageList();
+    }
+
+    @Override
+    public Object vratiID() {
+        return websiteId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.websiteId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(websiteId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New Website";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "Website";
     }
 }

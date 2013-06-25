@@ -24,6 +24,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "HtmlPage.findByHtmlPageId", query = "SELECT h FROM HtmlPage h WHERE h.htmlPageId = :htmlPageId"),
     @NamedQuery(name = "HtmlPage.findByHtmlPageName", query = "SELECT h FROM HtmlPage h WHERE h.htmlPageName = :htmlPageName"),
     @NamedQuery(name = "HtmlPage.findByHtmlPageDescription", query = "SELECT h FROM HtmlPage h WHERE h.htmlPageDescription = :htmlPageDescription")})
-public class HtmlPage implements Serializable {
+public class HtmlPage implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -149,5 +150,50 @@ public class HtmlPage implements Serializable {
     @Override
     public String toString() {
         return "model.website.HtmlPage[ htmlPageId=" + htmlPageId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "HtmlPage";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "htmlpage";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.htmlPageId = ((HtmlPage) gdo).getHtmlPageId();
+        this.htmlPageName = ((HtmlPage) gdo).getHtmlPageName();
+        this.htmlPageDescription = ((HtmlPage) gdo).getHtmlPageDescription();
+        this.htmlPageText = ((HtmlPage) gdo).getHtmlPageText();
+        this.websiteId = ((HtmlPage) gdo).getWebsiteId();
+        this.htmlTagList = ((HtmlPage) gdo).getHtmlTagList();
+    }
+
+    @Override
+    public Object vratiID() {
+        return htmlPageId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.htmlPageId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(htmlPageId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New HtmlPage";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "HtmlPage";
     }
 }

@@ -23,6 +23,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -34,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "PairedHtmlTag.findAll", query = "SELECT p FROM PairedHtmlTag p"),
     @NamedQuery(name = "PairedHtmlTag.findByHtmlTagId", query = "SELECT p FROM PairedHtmlTag p WHERE p.htmlTagId = :htmlTagId")})
-public class PairedHtmlTag implements Serializable {
+public class PairedHtmlTag implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -116,5 +117,48 @@ public class PairedHtmlTag implements Serializable {
     @Override
     public String toString() {
         return "model.website.PairedHtmlTag[ htmlTagId=" + htmlTagId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "PairedHtmlTag";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "pairedhtmltag";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.htmlTagId = ((PairedHtmlTag) gdo).getHtmlTagId();
+        this.htmlTag = ((PairedHtmlTag) gdo).getHtmlTag();
+        this.htmlTagList = ((PairedHtmlTag) gdo).getHtmlTagList();
+        this.htmlTagTextList = ((PairedHtmlTag) gdo).getHtmlTagTextList();
+    }
+
+    @Override
+    public Object vratiID() {
+        return htmlTagId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.htmlTagId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(htmlTagId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New PairedHtmlTag";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "PairedHtmlTag";
     }
 }

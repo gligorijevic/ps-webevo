@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "UnpairedHtmlTag.findAll", query = "SELECT u FROM UnpairedHtmlTag u"),
     @NamedQuery(name = "UnpairedHtmlTag.findByHtmlTagId", query = "SELECT u FROM UnpairedHtmlTag u WHERE u.htmlTagId = :htmlTagId")})
-public class UnpairedHtmlTag implements Serializable {
+public class UnpairedHtmlTag implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -88,5 +89,46 @@ public class UnpairedHtmlTag implements Serializable {
     @Override
     public String toString() {
         return "model.website.UnpairedHtmlTag[ htmlTagId=" + htmlTagId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "UnpairedHtmlTag";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "unpairedhtmltag";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.htmlTagId = ((UnpairedHtmlTag) gdo).getHtmlTagId();
+        this.htmlTag = ((UnpairedHtmlTag) gdo).getHtmlTag();
+    }
+
+    @Override
+    public Object vratiID() {
+        return htmlTagId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.htmlTagId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(htmlTagId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New UnpairedHtmlTag";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "UnpairedHtmlTag";
     }
 }

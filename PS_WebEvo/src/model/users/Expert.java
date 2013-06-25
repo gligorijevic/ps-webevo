@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Expert.findAll", query = "SELECT e FROM Expert e"),
     @NamedQuery(name = "Expert.findByUserId", query = "SELECT e FROM Expert e WHERE e.userId = :userId")})
-public class Expert implements Serializable {
+public class Expert implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -100,5 +101,47 @@ public class Expert implements Serializable {
     @Override
     public String toString() {
         return "model.corpus.Expert[ userId=" + userId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "Expert";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "expert";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.specialityId = ((Expert)gdo).getSpecialityId();
+        this.user = ((Expert)gdo).getUser();
+        this.userId = ((Expert)gdo).getUserId();
+    }
+
+    @Override
+    public Object vratiID() {
+        return userId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.userId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(userId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New Expert";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "Expert";
     }
 }

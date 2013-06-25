@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HtmlTagText.findAll", query = "SELECT h FROM HtmlTagText h"),
     @NamedQuery(name = "HtmlTagText.findByHtmlTagTextId", query = "SELECT h FROM HtmlTagText h WHERE h.htmlTagTextId = :htmlTagTextId"),
     @NamedQuery(name = "HtmlTagText.findByHtmlTagTextValue", query = "SELECT h FROM HtmlTagText h WHERE h.htmlTagTextValue = :htmlTagTextValue")})
-public class HtmlTagText implements Serializable {
+public class HtmlTagText implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -105,5 +106,47 @@ public class HtmlTagText implements Serializable {
     @Override
     public String toString() {
         return "model.website.HtmlTagText[ htmlTagTextId=" + htmlTagTextId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "HtmlTagText";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "htmltagtext";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.htmlTagTextId = ((HtmlTagText) gdo).getHtmlTagTextId();
+        this.htmlTagTextValue = ((HtmlTagText) gdo).getHtmlTagTextValue();
+        this.pairedHtmlTagid = ((HtmlTagText) gdo).getPairedHtmlTagid();
+    }
+
+    @Override
+    public Object vratiID() {
+        return htmlTagTextId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.htmlTagTextId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(htmlTagTextId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New HtmlTagText";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "HtmlTagText";
     }
 }

@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -34,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
-public class User implements Serializable {
+public class User implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -165,6 +166,53 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "model.corpus.User[ userId=" + userId + " ]";
+        return username;
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "User";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "user";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.userId = ((User)gdo).getUserId();
+        this.username = ((User)gdo).getUsername();
+        this.password = ((User)gdo).getPassword();
+        this.firstName = ((User)gdo).getFirstName();
+        this.lastName = ((User)gdo).getLastName();
+        this.email = ((User)gdo).getEmail();
+        this.client = ((User)gdo).getClient();
+        this.expert = ((User)gdo).getExpert();
+    }
+
+    @Override
+    public Object vratiID() {
+        return userId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.userId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(userId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New User";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "User";
     }
 }

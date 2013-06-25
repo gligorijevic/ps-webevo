@@ -25,6 +25,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "HtmlTag.findAll", query = "SELECT h FROM HtmlTag h"),
     @NamedQuery(name = "HtmlTag.findByHtmlTagId", query = "SELECT h FROM HtmlTag h WHERE h.htmlTagId = :htmlTagId"),
     @NamedQuery(name = "HtmlTag.findByHtmlTagName", query = "SELECT h FROM HtmlTag h WHERE h.htmlTagName = :htmlTagName")})
-public class HtmlTag implements Serializable {
+public class HtmlTag implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -155,5 +156,51 @@ public class HtmlTag implements Serializable {
     @Override
     public String toString() {
         return "model.website.HtmlTag[ htmlTagId=" + htmlTagId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "HtmlTag";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "htmltag";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.htmlTagId = ((HtmlTag)gdo).getHtmlTagId();
+        this.htmlTagName = ((HtmlTag)gdo).getHtmlTagName();
+        this.htmlPageId = ((HtmlTag)gdo).getHtmlPageId();
+        this.htmlTagAttributeList = ((HtmlTag)gdo).getHtmlTagAttributeList();
+        this.pairedHtmlTag = ((HtmlTag)gdo).getPairedHtmlTag();
+        this.unpairedHtmlTag = ((HtmlTag)gdo).getUnpairedHtmlTag();
+        this.pairedTagId = ((HtmlTag)gdo).getPairedTagId();
+    }
+
+    @Override
+    public Object vratiID() {
+        return htmlTagId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.htmlTagId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(htmlTagId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New HtmlTag";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "HtmlTag";
     }
 }

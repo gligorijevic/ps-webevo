@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -32,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Corpus.findByCorpusId", query = "SELECT c FROM Corpus c WHERE c.corpusId = :corpusId"),
     @NamedQuery(name = "Corpus.findByCorpusName", query = "SELECT c FROM Corpus c WHERE c.corpusName = :corpusName"),
     @NamedQuery(name = "Corpus.findByCorpusDescription", query = "SELECT c FROM Corpus c WHERE c.corpusDescription = :corpusDescription")})
-public class Corpus implements Serializable {
+public class Corpus implements GeneralDomainObject, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,6 +118,49 @@ public class Corpus implements Serializable {
     @Override
     public String toString() {
         return corpusName;
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "Corpus";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "corpus";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.corpusDescription = ((Corpus)gdo).getCorpusDescription();
+        this.corpusId = ((Corpus)gdo).getCorpusId();
+        this.corpusName = ((Corpus)gdo).getCorpusName();
+        this.taggedSentenceList = ((Corpus)gdo).getTaggedSentenceList();
+    }
+
+    @Override
+    public Object vratiID() {
+        return corpusId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.corpusId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(corpusId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New Corpus";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "Corpus";
     }
     
 }

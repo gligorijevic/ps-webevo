@@ -4,7 +4,6 @@
  */
 package model.users;
 
-import model.users.Expert;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -21,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Speciality.findBySpecialityId", query = "SELECT s FROM Speciality s WHERE s.specialityId = :specialityId"),
     @NamedQuery(name = "Speciality.findBySpecialityName", query = "SELECT s FROM Speciality s WHERE s.specialityName = :specialityName"),
     @NamedQuery(name = "Speciality.findBySpecialityDescription", query = "SELECT s FROM Speciality s WHERE s.specialityDescription = :specialityDescription")})
-public class Speciality implements Serializable {
+public class Speciality implements GeneralDomainObject, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="seq", sequenceName="seq") 
@@ -120,6 +120,49 @@ public class Speciality implements Serializable {
     @Override
     public String toString() {
         return "model.corpus.Speciality[ specialityId=" + specialityId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "Speciality";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "speciality";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.specialityId = ((Speciality)gdo).getSpecialityId();
+        this.specialityDescription = ((Speciality)gdo).getSpecialityDescription();
+        this.specialityName = ((Speciality)gdo).getSpecialityName();
+        this.expertList = ((Speciality)gdo).getExpertList();
+    }
+
+    @Override
+    public Object vratiID() {
+        return specialityId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.specialityId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(specialityId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New Speciality";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "Speciality";
     }
     
 }

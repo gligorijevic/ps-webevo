@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c"),
     @NamedQuery(name = "Client.findByUserId", query = "SELECT c FROM Client c WHERE c.userId = :userId")})
-public class Client implements Serializable {
+public class Client implements GeneralDomainObject, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name = "seq", sequenceName = "seq")
@@ -87,6 +88,47 @@ public class Client implements Serializable {
     @Override
     public String toString() {
         return "model.corpus.Client[ userId=" + userId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "Client";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "client";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.user = ((Client)gdo).getUser();
+        this.userId = ((Client)gdo).getUserId();
+    }
+
+    @Override
+    public Object vratiID() {
+        return userId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.userId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(userId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New Client";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "Client";
     }
     
 }

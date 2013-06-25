@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import model.GeneralDomainObject;
 
 /**
  *
@@ -31,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HtmlTagAttribute.findByHtmlTagAttributeId", query = "SELECT h FROM HtmlTagAttribute h WHERE h.htmlTagAttributeId = :htmlTagAttributeId"),
     @NamedQuery(name = "HtmlTagAttribute.findByHtmlTagAttributeName", query = "SELECT h FROM HtmlTagAttribute h WHERE h.htmlTagAttributeName = :htmlTagAttributeName"),
     @NamedQuery(name = "HtmlTagAttribute.findByHtmlTagAttributeValue", query = "SELECT h FROM HtmlTagAttribute h WHERE h.htmlTagAttributeValue = :htmlTagAttributeValue")})
-public class HtmlTagAttribute implements Serializable {
+public class HtmlTagAttribute implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -118,5 +119,48 @@ public class HtmlTagAttribute implements Serializable {
     @Override
     public String toString() {
         return "model.website.HtmlTagAttribute[ htmlTagAttributeId=" + htmlTagAttributeId + " ]";
+    }
+
+    @Override
+    public String vratiImeKlase() {
+        return "HtmlTagAttribute";
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "htmltagattribute";
+    }
+
+    @Override
+    public void prekopirajVrednostiAtributa(GeneralDomainObject gdo) {
+        this.htmlTagAttributeId = ((HtmlTagAttribute)gdo).getHtmlTagAttributeId();
+        this.htmlTagAttributeName = ((HtmlTagAttribute)gdo).getHtmlTagAttributeName();
+        this.htmlTagAttributeValue = ((HtmlTagAttribute)gdo).getHtmlTagAttributeValue();
+        this.htmlTagId = ((HtmlTagAttribute)gdo).getHtmlTagId();
+    }
+
+    @Override
+    public Object vratiID() {
+        return htmlTagAttributeId;
+    }
+
+    @Override
+    public void postaviAtributPretrazivanja(String atribut) {
+        this.htmlTagAttributeId = Integer.parseInt(atribut);
+    }
+
+    @Override
+    public String vratiAtributPretrazivanja() {
+        return String.valueOf(htmlTagAttributeId);
+    }
+
+    @Override
+    public String vratiNazivNovogObjekta() {
+        return "New HtmlTagAttribute";
+    }
+
+    @Override
+    public String vratiNazivObjekta() {
+        return "HtmlTagAttribute";
     }
 }
