@@ -5,7 +5,6 @@
 package logic.login;
 
 import broker.DBBroker;
-import java.util.ArrayList;
 import java.util.List;
 import model.users.User;
 

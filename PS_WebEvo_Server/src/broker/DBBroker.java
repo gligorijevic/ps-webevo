@@ -44,7 +44,7 @@ public class DBBroker {
     }
 
     /*Beginning of GeneralDomainObject calls */
-    public List<GeneralDomainObject> returnAll(List<GeneralDomainObject> odoList) {
+    public List<GeneralDomainObject> returnAll(List<GeneralDomainObject> odoList) throws Exception {
         if (odoList == null) {
             odoList = new ArrayList<GeneralDomainObject>();
         }
@@ -57,12 +57,12 @@ public class DBBroker {
             return odoList;
         } catch (Exception e) {
             logMessage = logMessage + "\n Greska u upitu. Neuspesno vraćanje svih " + odoList.get(0).vratiNazivObjekta() + " iz baze.";
-            return null;
+            throw e;
             //return false;
         }
     }
 
-    public List<GeneralDomainObject> returnGDOforCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) {
+    public List<GeneralDomainObject> returnGDOforCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) throws Exception {
         String query = "SELECT objd FROM " + odo.vratiImeKlase() + " objd where ";
         //Query createQuery = em.createQuery("SELECT objd FROM "+odo.vratiImeKlase()+" objd where ");
 
@@ -84,11 +84,11 @@ public class DBBroker {
             return lista;
         } catch (Exception e) {
             logMessage = logMessage + "\n Greska u upitu. Neuspesno vraćanje " + odo.getClass().getSimpleName() + "po uslovu iz baze.";
-            return null;
+            throw e;
         }
     }
 
-    public boolean createNew(GeneralDomainObject odo) {
+    public void createNew(GeneralDomainObject odo) throws Exception {
         try {
             System.out.println("Usao u kreiraj novi");
             em.persist(odo);
@@ -101,20 +101,18 @@ public class DBBroker {
             System.out.println("kreiran novi " + odo.vratiID() + " " + odo.vratiNazivNovogObjekta());
 
             logMessage = logMessage + "\n Uspesno kreiran " + odo.vratiNazivObjekta();
-            return true;
         } catch (Exception e) {
             logMessage = logMessage + "\n Greska prilikom kreiranja " + odo.vratiNazivObjekta();
-            return false;
+            throw e;
         }
     }
 
-    public boolean saveGDO(GeneralDomainObject odo) {
+    public void saveGDO(GeneralDomainObject odo) throws Exception {
         try {
             em.persist(odo);
-            return true;
         } catch (Exception e) {
             logMessage = logMessage + "\n Objekat " + odo.getClass().getSimpleName() + " nije sačuvan.";
-            return false;
+            throw e;
         }
     }
 
