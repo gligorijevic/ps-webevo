@@ -45,7 +45,7 @@ public class FrmMain extends javax.swing.JFrame {
         }
         
         initComponents();
-        setStartImage();
+
     }
 
     /**
@@ -86,21 +86,17 @@ public class FrmMain extends javax.swing.JFrame {
         setTitle("Web Evoluton");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nlp_start.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/wc.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -220,47 +216,47 @@ public class FrmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miAddSentenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddSentenceActionPerformed
-        controllerMain.addTaggedSentenceForm(this);
+//        controllerMain.addTaggedSentenceForm(this);
     }//GEN-LAST:event_miAddSentenceActionPerformed
 
     private void miCorpusPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCorpusPreviewActionPerformed
-        controllerMain.frmKorpusesPreview(this);
+//        controllerMain.frmKorpusesPreview(this);
     }//GEN-LAST:event_miCorpusPreviewActionPerformed
 
     private void miPreviewCorpusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPreviewCorpusActionPerformed
-        controllerMain.frmKorpusPreview();
+//        controllerMain.frmKorpusPreview();
     }//GEN-LAST:event_miPreviewCorpusActionPerformed
 
     private void miAddCorpusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddCorpusActionPerformed
-        controllerMain.frmAddKorpus();
+//        controllerMain.frmAddKorpus();
     }//GEN-LAST:event_miAddCorpusActionPerformed
 
     private void miTraingTaggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTraingTaggerActionPerformed
-        controllerMain.frmTrainingTaggerModel();
+//        controllerMain.frmTrainingTaggerModel();
     }//GEN-LAST:event_miTraingTaggerActionPerformed
 
     private void miLoadWebpageFromUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLoadWebpageFromUrlActionPerformed
-        controllerMain.frmLoadWebpage();
+//        controllerMain.frmLoadWebpage();
     }//GEN-LAST:event_miLoadWebpageFromUrlActionPerformed
 
     private void miAboutWebEvoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutWebEvoActionPerformed
-        controllerMain.frmAboutWebEvo();
+//        controllerMain.frmAboutWebEvo();
     }//GEN-LAST:event_miAboutWebEvoActionPerformed
 
     private void miAboutLingPipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutLingPipeActionPerformed
-        controllerMain.frmAboutLingPipe();
+//        controllerMain.frmAboutLingPipe();
     }//GEN-LAST:event_miAboutLingPipeActionPerformed
 
     private void miAboutJsoupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutJsoupActionPerformed
-        controllerMain.frmAboutJSoup();
+//        controllerMain.frmAboutJSoup();
     }//GEN-LAST:event_miAboutJsoupActionPerformed
 
     private void miAboutJpaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutJpaActionPerformed
-        controllerMain.frmAboutJpa();
+//        controllerMain.frmAboutJpa();
     }//GEN-LAST:event_miAboutJpaActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        controllerMain.frmReadWebpageData();
+//        controllerMain.frmReadWebpageData();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -336,19 +332,7 @@ public class FrmMain extends javax.swing.JFrame {
         this.controllerMain = controllerMain;
     }
 
-    private void setStartImage() {
-        try {
-            BufferedImage myPicture = ImageIO.read(new File("src/images/nlp_start.jpg"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-            pnlMain.add(picLabel);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        validate();
-        repaint();
-        pack();
-    }
-
+   
     public void setActivePanel(JPanel newPanel) {
         if (pnlMain != null) {
             this.remove(pnlMain);

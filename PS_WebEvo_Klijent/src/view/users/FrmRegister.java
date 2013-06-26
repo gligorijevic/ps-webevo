@@ -8,21 +8,21 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
-import model.Administrator;
 import model.GeneralDomainObject;
+import model.users.User;
 import view.OpstaEkranskaForma;
-import view.controllers.ControllerUI_Administrator;
 
 /**
  *
  * @author Djordje
  */
-public class FrmRegister extends JFrame implements OpstaEkranskaForma {
+public class FrmRegister extends JDialog implements OpstaEkranskaForma {
 
-    ControllerUI_Administrator ctrlAdmin;
+    ControllerAddNewUser ctrlAdmin;
 
     /**
      * Creates new form FrmAdministrator
@@ -51,8 +51,7 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
         firstName = new javax.swing.JTextField();
         lastName = new javax.swing.JTextField();
         email = new javax.swing.JTextField();
-        btnRegisterAdmin = new javax.swing.JButton();
-        btnUpdateAdmin = new javax.swing.JButton();
+        btnRegisterUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -66,17 +65,10 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
 
         jLabel5.setText("e-mail: ");
 
-        btnRegisterAdmin.setText("Register new administrator");
-        btnRegisterAdmin.addActionListener(new java.awt.event.ActionListener() {
+        btnRegisterUser.setText("Register");
+        btnRegisterUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegisterAdminActionPerformed(evt);
-            }
-        });
-
-        btnUpdateAdmin.setText("Update administrator");
-        btnUpdateAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateAdminActionPerformed(evt);
+                btnRegisterUserActionPerformed(evt);
             }
         });
 
@@ -102,10 +94,7 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
                                 .addComponent(firstName)
                                 .addComponent(lastName)
                                 .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnUpdateAdmin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRegisterAdmin)))
+                    .addComponent(btnRegisterUser))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -132,33 +121,27 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
                     .addComponent(jLabel5)
                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegisterAdmin)
-                    .addComponent(btnUpdateAdmin))
+                .addComponent(btnRegisterUser)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRegisterAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterAdminActionPerformed
-
-        String SOZapamti = ctrlAdmin.SOZapamti();
-        JOptionPane.showMessageDialog(this, SOZapamti);
-        if (ctrlAdmin.getPanelAllAdmins() != null) {
-            ctrlAdmin.setTableModel();
+    private void btnRegisterUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterUserActionPerformed
+        try {
+            ControllerAddNewUser controllerAddNewUser= new ControllerAddNewUser();
+            controllerAddNewUser.setOef(this);
+            controllerAddNewUser.setFrmAddNewUser(this);
+            controllerAddNewUser.KonvertujGrafickiObjekatUDomenskiObjekat();
+            String SOZapamti = controllerAddNewUser.SOZapamti();
+            JOptionPane.showMessageDialog(this, SOZapamti);
+            
+            this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmRegister.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
-    }//GEN-LAST:event_btnRegisterAdminActionPerformed
-
-    private void btnUpdateAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateAdminActionPerformed
-        String SOObradi = ctrlAdmin.SOObradi();
-        JOptionPane.showMessageDialog(this, SOObradi);
-        if (ctrlAdmin.getPanelAllAdmins() != null) {
-            ctrlAdmin.setTableModel();
-        }
-        this.dispose();
-    }//GEN-LAST:event_btnUpdateAdminActionPerformed
+    }//GEN-LAST:event_btnRegisterUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,13 +164,13 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmAdministrator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmAdministrator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmAdministrator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmAdministrator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -202,8 +185,7 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRegisterAdmin;
-    private javax.swing.JButton btnUpdateAdmin;
+    private javax.swing.JButton btnRegisterUser;
     private javax.swing.JTextField email;
     private javax.swing.JTextField firstName;
     private javax.swing.JLabel jLabel1;
@@ -233,12 +215,16 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
 
     @Override
     public GeneralDomainObject kreirajObjekat() {
-        return new Administrator();
+        return new User();
     }
 
     private void initializeController() {
-      
-            ctrlAdmin = new ControllerUI_Administrator(this);
+        try {
+            ctrlAdmin = new ControllerAddNewUser();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmRegister.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
       
     }
 
@@ -313,14 +299,12 @@ public class FrmRegister extends JFrame implements OpstaEkranskaForma {
     }
 
     public JButton getBtnRegisterAdmin() {
-        return btnRegisterAdmin;
+        return btnRegisterUser;
     }
 
-    public JButton getBtnUpdateAdmin() {
-        return btnUpdateAdmin;
-    }
 
-    public void setCtrlAdmin(ControllerUI_Administrator ctrlAdmin) {
+
+    public void setCtrlAdmin(ControllerAddNewUser ctrlAdmin) {
         this.ctrlAdmin = ctrlAdmin;
     }
 }
