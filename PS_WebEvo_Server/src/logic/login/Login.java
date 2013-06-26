@@ -20,7 +20,7 @@ public class Login {
         loginUser.setPassword(password);
 
         DBBroker.getInstance().beginTransaction();
-        DBBroker.getInstance().loginUser(loginUser);
+        loginUser=DBBroker.getInstance().loginUser(loginUser);
         if (loginUser != null) {
             DBBroker.getInstance().commitTransaction();
             DBBroker.getInstance().closeTransaction();
