@@ -13,6 +13,7 @@ import logic.tagger.EntityCorpus.TrainingCorpus;
 import logic.tagger.train.NamedEntityRecognitionTraining;
 import logic.webpage.parse.HtmlParsing;
 import logic.webpage.parse.TreeModelFromHtmlPage;
+import model.GeneralDomainObject;
 import model.corpus.Corpus;
 import model.corpus.TaggedSentence;
 import model.website.HtmlPage;
@@ -37,6 +38,13 @@ public class ControllerAL {
         return instance;
     }
 
+    /* Beginning of GeneralDomainObject calls */
+    
+    public void addNewGDO(GeneralDomainObject gdo){
+        DBBroker.getInstance().createNew(gdo);
+    }
+    
+    /* Ending of GeneralDomainObject calls */
     public void addNewCorpus(Corpus corpus) throws Exception {
         DBBroker.getInstance().addNewCorpus(corpus);
     }
@@ -83,16 +91,16 @@ public class ControllerAL {
         dtm = new DefaultTreeModel(dmtn);
         return dtm;
     }
-    
-    public void copyHtmlPageStructure(Document htmlDocument, HtmlPage htmlPage){
+
+    public void copyHtmlPageStructure(Document htmlDocument, HtmlPage htmlPage) {
         TreeModelFromHtmlPage.copyHtmlStructure(htmlDocument, htmlPage);
     }
 
     public void saveHtmlPage(HtmlPage htmlPage) throws Exception {
         DBBroker.getInstance().addHtmlPage(htmlPage);
     }
-    
-    public void saveWebsite(Website website) throws Exception{
+
+    public void saveWebsite(Website website) throws Exception {
         DBBroker.getInstance().addWebsite(website);
     }
 
