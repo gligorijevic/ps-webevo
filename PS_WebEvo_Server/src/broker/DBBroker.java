@@ -327,8 +327,20 @@ public class DBBroker {
         return res;
     }
 
-    public void loginUser(User loginUser) {
+    public User loginUser(User loginUser) {
         List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=" + loginUser.getUsername()).getResultList();
         loginUser = res.get(0);
+        return res.get(0);
     }
+
+    public User registerNewUser(User regUser) {
+        List<User> resultList = em.createNamedQuery("User.findByUsername").setParameter("username", regUser.getUsername()).getResultList();
+        if(resultList.size()==1){
+            regUser = resultList.get(0);
+        }else{
+            regUser = null;
+        }
+        return resultList.get(0);
+    }
+
 }

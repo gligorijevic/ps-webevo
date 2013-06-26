@@ -8,11 +8,10 @@ import broker.DBBroker;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import logic.login.Login;
+import logic.register.Register;
 import logic.tagger.EntityCorpus.TrainingCorpus;
 import logic.tagger.train.NamedEntityRecognitionTraining;
 import logic.webpage.parse.HtmlParsing;
@@ -52,7 +51,6 @@ public class ControllerAL {
         } catch (Exception ex) {
             DBBroker.getInstance().rollbackTransaction();
         }
-
     }
 
     public List<GeneralDomainObject> returnGDOsByCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) throws Exception {
@@ -101,9 +99,18 @@ public class ControllerAL {
     }
 
     /* Ending of GeneralDomainObject calls */
-    
     public User login(String username, String password) {
         return Login.login(username, password);
+    }
+
+    public User register(User regUser) throws Exception {
+        Register.register(regUser);
+        if (regUser == null) {
+            throw new Exception("User already exists.");
+        }else{
+            return regUser;
+        }
+        
     }
 
     public void addNewCorpus(Corpus corpus) throws Exception {

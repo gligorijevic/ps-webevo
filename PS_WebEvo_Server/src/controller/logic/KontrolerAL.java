@@ -16,8 +16,6 @@ package controller.logic;
  */
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
 //import logic.SO.*;
 import model.GeneralDomainObject;
 import model.users.User;
