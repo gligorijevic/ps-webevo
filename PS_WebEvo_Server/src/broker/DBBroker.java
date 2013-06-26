@@ -328,8 +328,8 @@ public class DBBroker {
     }
 
     public User loginUser(User loginUser) {
-        List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=" + loginUser.getUsername()).getResultList();
-        loginUser = res.get(0);
+        List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=?").setParameter(1, loginUser.getUsername()).getResultList();
+//        loginUser = res.get(0);
         return res.get(0);
     }
 
