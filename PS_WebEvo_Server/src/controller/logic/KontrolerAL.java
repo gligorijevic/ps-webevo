@@ -93,9 +93,18 @@ class Klijent extends Thread {
 //                        signal = Pretrazi.Pretrazi(gdo);
 //                    }
 //
-//                    if (NazivSO.equals("Zapamti") == true) {
-//                        signal = Zapamti.Zapamti(gdo);
-//                    }
+                    if (NazivSO.equals("Zapamti") == true) {
+                        //signal = Zapamti.Zapamti(gdo);
+                        try {
+                            User user = (User) gdo;
+                            ControllerAL.getInstance().register(user);
+                            signal=null;
+                        } catch (Exception exception) {
+                            signal = exception.getMessage();
+                            System.err.println(exception);
+                            exception.printStackTrace();
+                        }
+                    }
 //
 //                    if (NazivSO.equals("Obradi") == true) {
 //                        signal = Obradi.Obradi(gdo);

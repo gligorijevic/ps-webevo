@@ -103,14 +103,8 @@ public class ControllerAL {
         return Login.login(username, password);
     }
 
-    public User register(User regUser) throws Exception {
+    public void register(User regUser) throws Exception {
         Register.register(regUser);
-        if (regUser == null) {
-            throw new Exception("User already exists.");
-        }else{
-            return regUser;
-        }
-        
     }
 
     public void addNewCorpus(Corpus corpus) throws Exception {

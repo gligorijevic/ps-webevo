@@ -14,11 +14,17 @@ import model.users.User;
  */
 public class Register {
     
-    public static void register(GeneralDomainObject gdo){
+    /**
+     *
+     * @param gdo
+     * @throws Exception
+     */
+    public static void register(GeneralDomainObject gdo) throws Exception{
         User regUser = (User)gdo;
         DBBroker.getInstance().beginTransaction();
         DBBroker.getInstance().registerNewUser(regUser);
-        DBBroker.getInstance().closeTransaction();
+        DBBroker.getInstance().commitTransaction();
+        
     }
     
 }

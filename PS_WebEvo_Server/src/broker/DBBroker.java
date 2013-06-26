@@ -331,18 +331,18 @@ public class DBBroker {
 //        List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=?").setParameter(1, loginUser.getUsername()).getResultList();
         List<User> res = em.createNamedQuery("User.findByUsernameAndPassword").setParameter("username", loginUser.getUsername()).setParameter("password", loginUser.getPassword()).getResultList();
         System.out.println(res.size());
-//        loginUser = res.get(0);
         return res.get(0);
     }
 
-    public User registerNewUser(User regUser) {
+    public void registerNewUser(User regUser) throws Exception {
         List<User> resultList = em.createNamedQuery("User.findByUsername").setParameter("username", regUser.getUsername()).getResultList();
         if(resultList.size()==1){
             regUser = resultList.get(0);
+            throw  new Exception("User already exists");
         }else{
-            regUser = null;
+            em.persist(regUser);
         }
-        return resultList.get(0);
+
     }
 
 }
