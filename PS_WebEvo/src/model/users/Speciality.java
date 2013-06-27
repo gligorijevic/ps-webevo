@@ -37,8 +37,8 @@ import model.GeneralDomainObject;
 public class Speciality implements GeneralDomainObject, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="seq", sequenceName="seq") 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq")
+    @SequenceGenerator(name="seq_speciality", sequenceName="seq_speciality") 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq_speciality")
     @Basic(optional = false)
     @Column(name = "specialityId")
     private Integer specialityId;
@@ -119,7 +119,7 @@ public class Speciality implements GeneralDomainObject, Serializable {
 
     @Override
     public String toString() {
-        return "model.corpus.Speciality[ specialityId=" + specialityId + " ]";
+        return specialityName;
     }
 
     @Override

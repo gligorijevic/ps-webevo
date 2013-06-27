@@ -34,8 +34,8 @@ public class UnpairedHtmlTag implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_uptag", sequenceName = "seq_uptag")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_uptag")
     @Basic(optional = false)
     @Column(name = "htmlTagId")
     private Integer htmlTagId;

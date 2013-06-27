@@ -40,8 +40,8 @@ public class User implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_user", sequenceName = "seq_user")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
     @Basic(optional = false)
     @Column(name = "userId")
     private Integer userId;

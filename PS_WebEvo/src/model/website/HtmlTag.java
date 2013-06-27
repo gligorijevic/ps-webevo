@@ -42,8 +42,8 @@ public class HtmlTag implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_tag", sequenceName = "seq_tag")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tag")
     @Basic(optional = false)
     @Column(name = "htmlTagId")
     private Integer htmlTagId;

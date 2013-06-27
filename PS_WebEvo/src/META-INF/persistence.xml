@@ -7,6 +7,7 @@
     <class>model.corpus.TaggedSentence</class>
     <class>model.corpus.Corpus</class>
     <class>model.users.Expert</class>
+    <class>model.users.Speciality</class>
     <class>model.users.User</class>
     <class>model.website.Website</class>
     <class>model.website.HtmlPage</class>

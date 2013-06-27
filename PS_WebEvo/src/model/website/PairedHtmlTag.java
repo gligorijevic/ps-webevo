@@ -39,8 +39,8 @@ public class PairedHtmlTag implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_ptag", sequenceName = "seq_ptag")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_ptag")
     @Basic(optional = false)
     @Column(name = "htmlTagId")
     private Integer htmlTagId;

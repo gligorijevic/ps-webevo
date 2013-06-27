@@ -33,8 +33,8 @@ import model.GeneralDomainObject;
 public class Client implements GeneralDomainObject, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_client", sequenceName = "seq_client")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_client")
     @Basic(optional = false)
     @Column(name = "userId")
     private Integer userId;

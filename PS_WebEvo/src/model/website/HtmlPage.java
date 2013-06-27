@@ -42,8 +42,8 @@ public class HtmlPage implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_page", sequenceName = "seq_page")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_page")
     @Basic(optional = false)
     @Column(name = "htmlPageId")
     private Integer htmlPageId;
@@ -57,14 +57,14 @@ public class HtmlPage implements GeneralDomainObject, Serializable {
     @Lob
     @Column(name = "htmlPageText")
     private String htmlPageText;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "htmlPageId")
-    private List<HtmlTag> htmlTagList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "htmlPageId")
+//    private List<HtmlTag> htmlTagList;
     @JoinColumn(name = "websiteId", referencedColumnName = "websiteId")
     @ManyToOne(optional = false)
     private Website websiteId;
 
     public HtmlPage() {
-        htmlTagList = new ArrayList<HtmlTag>();
+//        htmlTagList = new ArrayList<HtmlTag>();
     }
 
     public HtmlPage(Integer htmlPageId) {
@@ -110,14 +110,14 @@ public class HtmlPage implements GeneralDomainObject, Serializable {
         this.htmlPageText = htmlPageText;
     }
 
-    @XmlTransient
-    public List<HtmlTag> getHtmlTagList() {
-        return htmlTagList;
-    }
-
-    public void setHtmlTagList(List<HtmlTag> htmlTagList) {
-        this.htmlTagList = htmlTagList;
-    }
+//    @XmlTransient
+//    public List<HtmlTag> getHtmlTagList() {
+//        return htmlTagList;
+//    }
+//
+//    public void setHtmlTagList(List<HtmlTag> htmlTagList) {
+//        this.htmlTagList = htmlTagList;
+//    }
 
     public Website getWebsiteId() {
         return websiteId;
@@ -169,7 +169,7 @@ public class HtmlPage implements GeneralDomainObject, Serializable {
         this.htmlPageDescription = ((HtmlPage) gdo).getHtmlPageDescription();
         this.htmlPageText = ((HtmlPage) gdo).getHtmlPageText();
         this.websiteId = ((HtmlPage) gdo).getWebsiteId();
-        this.htmlTagList = ((HtmlPage) gdo).getHtmlTagList();
+//        this.htmlTagList = ((HtmlPage) gdo).getHtmlTagList();
     }
 
     @Override

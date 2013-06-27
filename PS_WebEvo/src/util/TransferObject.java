@@ -4,11 +4,13 @@
  */
 package util;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Djordje Gligorijevic
  */
-public class TransferObject {
+public class TransferObject implements Serializable{
 
     private int clientRequestOperation;
     private Object clientObject;

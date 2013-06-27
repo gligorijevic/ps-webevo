@@ -40,8 +40,8 @@ public class Website implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_website", sequenceName = "seq_website", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_website")
     @Basic(optional = false)
     @Column(name = "websiteId")
     private Integer websiteId;

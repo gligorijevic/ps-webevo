@@ -35,8 +35,8 @@ public class Expert implements GeneralDomainObject, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "seq", sequenceName = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq_expert", sequenceName = "seq_expert")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expert")
     @Basic(optional = false)
     @Column(name = "userId")
     private Integer userId;
