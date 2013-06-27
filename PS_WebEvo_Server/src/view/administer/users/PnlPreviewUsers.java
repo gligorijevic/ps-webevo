@@ -4,6 +4,10 @@
  */
 package view.administer.users;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
 import view.controller.administer.users.ControllerPreviewUsers;
 
 /**
@@ -11,7 +15,9 @@ import view.controller.administer.users.ControllerPreviewUsers;
  * @author Djordje Gligorijevic
  */
 public class PnlPreviewUsers extends javax.swing.JPanel {
+
     private ControllerPreviewUsers controllerPreviewUsers;
+
     /**
      * Creates new form PnlPreviewUsers
      */
@@ -28,29 +34,74 @@ public class PnlPreviewUsers extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUsers = new javax.swing.JTable();
+        btnUpdateUser = new javax.swing.JButton();
+        btnDeleteUser = new javax.swing.JButton();
 
-        jLabel1.setText("Nacrtaj nesto");
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblUsers);
+
+        btnUpdateUser.setText("Update user");
+        btnUpdateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateUserActionPerformed(evt);
+            }
+        });
+
+        btnDeleteUser.setText("Delete user");
+        btnDeleteUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteUserActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(156, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(179, 179, 179))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnUpdateUser)
+                .addGap(7, 7, 7)
+                .addComponent(btnDeleteUser)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jLabel1)
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdateUser)
+                    .addComponent(btnDeleteUser)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
+        getControllerPreviewUsers().deleteSelectedUser();
+    }//GEN-LAST:event_btnDeleteUserActionPerformed
+
+    private void btnUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUserActionPerformed
+        getControllerPreviewUsers().updateSelectedUser();
+    }//GEN-LAST:event_btnUpdateUserActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnDeleteUser;
+    private javax.swing.JButton btnUpdateUser;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -65,5 +116,77 @@ public class PnlPreviewUsers extends javax.swing.JPanel {
      */
     public void setControllerPreviewUsers(ControllerPreviewUsers controllerPreviewUsers) {
         this.controllerPreviewUsers = controllerPreviewUsers;
+    }
+
+    public void setData() {
+        try {
+            TblModelPreviewUsers model = new TblModelPreviewUsers(getControllerPreviewUsers().getAllUsers());
+            getTblUsers().setModel(model);
+
+            JComboBox jcbUsertype = new JComboBox();
+            jcbUsertype.addItem("Expert");
+            jcbUsertype.addItem("Client");
+            TableColumn tcProizvod = getTblUsers().getColumnModel().getColumn(6);
+            tcProizvod.setCellEditor(new DefaultCellEditor(jcbUsertype));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
+    /**
+     * @return the btnDeleteUser
+     */
+    public javax.swing.JButton getBtnDeleteUser() {
+        return btnDeleteUser;
+    }
+
+    /**
+     * @param btnDeleteUser the btnDeleteUser to set
+     */
+    public void setBtnDeleteUser(javax.swing.JButton btnDeleteUser) {
+        this.btnDeleteUser = btnDeleteUser;
+    }
+
+    /**
+     * @return the btnUpdateUser
+     */
+    public javax.swing.JButton getBtnUpdateUser() {
+        return btnUpdateUser;
+    }
+
+    /**
+     * @param btnUpdateUser the btnUpdateUser to set
+     */
+    public void setBtnUpdateUser(javax.swing.JButton btnUpdateUser) {
+        this.btnUpdateUser = btnUpdateUser;
+    }
+
+    /**
+     * @return the jScrollPane1
+     */
+    public javax.swing.JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    /**
+     * @param jScrollPane1 the jScrollPane1 to set
+     */
+    public void setjScrollPane1(javax.swing.JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    /**
+     * @return the tblUsers
+     */
+    public javax.swing.JTable getTblUsers() {
+        return tblUsers;
+    }
+
+    /**
+     * @param tblUsers the tblUsers to set
+     */
+    public void setTblUsers(javax.swing.JTable tblUsers) {
+        this.tblUsers = tblUsers;
     }
 }

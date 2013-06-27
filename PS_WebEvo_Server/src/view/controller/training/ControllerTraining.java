@@ -6,8 +6,6 @@ package view.controller.training;
 
 import controller.logic.ControllerAL;
 import java.io.IOException;
-import logic.tagger.EntityCorpus.TrainingCorpus;
-import logic.tagger.train.NamedEntityRecognitionTraining;
 import model.corpus.Corpus;
 import storage.CorpusStorage;
 import view.training.FrmTrainingTaggerModel;
@@ -38,10 +36,8 @@ public class ControllerTraining {
     }
 
     public void startTraining() throws IOException {
-        
         Corpus corpus = (Corpus) frmTrainingTaggerModel.getCbCorpuses().getSelectedItem();
         frmTrainingTaggerModel.getTxtATrainingResults().setText(ControllerAL.getInstance().startTraining(corpus));
-        
 
     }
 

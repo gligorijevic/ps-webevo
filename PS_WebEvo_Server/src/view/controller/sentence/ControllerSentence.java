@@ -44,7 +44,8 @@ public class ControllerSentence {
         ts.setCorpusId(corpus);
         ts.setSentence(sentence);
         ts.setTags(tags);
-        ControllerAL.getInstance().addNewTaggedSentence(ts);
+//        ControllerAL.getInstance().addNewTaggedSentence(ts);
+        ControllerAL.getInstance().addNewGDO(ts);
     }
 
     public void fillComboBoxKorpus() {

@@ -5,6 +5,8 @@
 package logic.login;
 
 import broker.DBBroker;
+import exception.UserAlreadyExistsException;
+import exception.WrongUsernameOrPasswordException;
 import java.util.List;
 import model.users.User;
 
@@ -14,7 +16,7 @@ import model.users.User;
  */
 public class Login {
 
-    public static User login(String username, String password) {
+    public static User login(String username, String password) throws WrongUsernameOrPasswordException {
         User loginUser = new User();
         loginUser.setUsername(username);
         loginUser.setPassword(password);
@@ -27,6 +29,7 @@ public class Login {
         } else {
             DBBroker.getInstance().rollbackTransaction();
             DBBroker.getInstance().closeTransaction();
+            throw new WrongUsernameOrPasswordException("Wrong username or password");
         }
 
         return loginUser;

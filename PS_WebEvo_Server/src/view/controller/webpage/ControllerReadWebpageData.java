@@ -6,8 +6,11 @@ package view.controller.webpage;
 
 import controller.logic.ControllerAL;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.tree.DefaultTreeModel;
+import model.GeneralDomainObject;
+import model.corpus.Corpus;
 import model.website.HtmlPage;
 import model.website.Website;
 import org.jsoup.nodes.Document;
@@ -41,8 +44,8 @@ public class ControllerReadWebpageData {
         setWebpage(ControllerAL.getInstance().parseWebpageDocumentFromUrl(frmReadWebpageData.getTxtFWebpageUrl().getText().trim()));
         frmReadWebpageData.getTxtAWebpage().setText(getWebpage().html());
     }
-    
-    public void copyHtmlPageStructure(){
+
+    public void copyHtmlPageStructure() {
         ControllerAL.getInstance().copyHtmlPageStructure(getWebpage(), getHtmlPage());
         System.out.println(getHtmlPage());
         frmReadWebpageData.getLblCopyDataResult().setText("Successful copy.");
@@ -53,9 +56,9 @@ public class ControllerReadWebpageData {
     }
 
     public void saveWebsite(Website website) throws Exception {
-       website.getHtmlPageList().add(getHtmlPage());
-       
-       ControllerAL.getInstance().saveWebsite(website);
+        website.getHtmlPageList().add(getHtmlPage());
+        htmlPage.setWebsiteId(website);
+        ControllerAL.getInstance().saveWebsite(website);
     }
 
     /**
@@ -101,8 +104,11 @@ public class ControllerReadWebpageData {
     }
 
     public void fillCbOnFrmDefineWebsite() {
-        List<Website> websites = ControllerAL.getInstance().getAddWebsites();
-        
+        List<Website> websites = new ArrayList<Website>();
+        List<GeneralDomainObject> rezultat = ControllerAL.getInstance().returnAll(new Website());
+        for (GeneralDomainObject generalDomainObject : rezultat) {
+            websites.add((Website) generalDomainObject);
+        }
         frmDefineWebsite.fillCbWebsites(websites);
     }
 }

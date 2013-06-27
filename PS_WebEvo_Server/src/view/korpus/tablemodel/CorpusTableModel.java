@@ -89,7 +89,9 @@ public class CorpusTableModel extends AbstractTableModel {
 //                persistence.KorpusPersistence.getInstance().getKorpusFromId(taggedSentence.getKorpus().getId()).getTaggedSentenceFromKorpusById(taggedSentence.getId()).setKorpus((Korpus) aValue);
         }
         try {
-            ControllerAL.getInstance().updateCorpus(corpus);
+//            ControllerAL.getInstance().updateCorpus(corpus);
+            ControllerAL.getInstance().updateGDO(corpus);
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "System failed to update corpus.");
         }

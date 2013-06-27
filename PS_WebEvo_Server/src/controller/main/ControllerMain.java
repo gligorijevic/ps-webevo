@@ -4,12 +4,10 @@
  */
 package controller.main;
 
-import broker.DBBroker;
 import view.controller.corpus.ControllerKorpusPreview;
 import view.controller.corpus.ControllerAddCorpus;
 import view.controller.corpus.ControllerKorpusesPreview;
 import view.controller.sentence.ControllerSentence;
-import java.sql.SQLException;
 import view.FrmMain;
 import view.about.FrmAboutJPA;
 import view.about.FrmAboutJSoup;
@@ -37,33 +35,32 @@ import view.webpage.FrmReadWebpageData;
  * @author Djordje Gligorijevic
  */
 public class ControllerMain {
-    
+
     private FrmMain mainForm;
-    
+
     public FrmMain getMainForm() {
         return mainForm;
     }
-    
+
     public void setMainForm(FrmMain mainForm) {
         this.mainForm = mainForm;
     }
-    
+
     public ControllerMain() {
     }
-    
+
 //    public void saveAllKorpuses() throws ClassNotFoundException, SQLException {
 //        for (int i = 0; i < persistence.KorpusPersistence.getInstance().getKorpus().size(); i++) {
 //            saveKorpus(persistence.KorpusPersistence.getInstance().getKorpus().get(i).getId());
 //        }
 //    }
-    
     public void frmAddKorpus() {
         FrmAddCorpus frmAddkorpus = new FrmAddCorpus(mainForm, true);
         ControllerAddCorpus controllerAddCorpus = new ControllerAddCorpus(frmAddkorpus);
         frmAddkorpus.setControllerAddKorpus(controllerAddCorpus);
         frmAddkorpus.setVisible(true);
     }
-    
+
     public void addTaggedSentenceForm(FrmMain frmMain) {
         FrmAddTaggedSentence frmTaggedSentence = new FrmAddTaggedSentence(frmMain, true);
         ControllerSentence controllerSentence = new ControllerSentence(frmTaggedSentence);
@@ -71,7 +68,7 @@ public class ControllerMain {
         frmTaggedSentence.update();
         frmTaggedSentence.setVisible(true);
     }
-    
+
     public void frmKorpusesPreview(FrmMain frmMain) {
         FrmKorpusesPreview frmKorpusPreview = new FrmKorpusesPreview(frmMain, false);
         ControllerKorpusesPreview controllerKorpusesPreview = new ControllerKorpusesPreview();
@@ -80,12 +77,11 @@ public class ControllerMain {
         frmKorpusPreview.updateForm();
         frmKorpusPreview.setVisible(true);
     }
-    
+
 //    public void saveKorpus(int id) throws ClassNotFoundException, SQLException {
 //        
 //        DBBroker.getInstance().updateKorpus(id);
 //    }
-    
 //    public void getKorpus(int id) throws ClassNotFoundException, SQLException {
 //        DBBroker.getInstance().getKorpus(id);
 //    }
@@ -113,7 +109,6 @@ public class ControllerMain {
 //    public void removeTaggedSentences() throws ClassNotFoundException, SQLException {
 //        DBBroker.getInstance().removeTaggedSentences();
 //    }
-    
     public void frmKorpusPreview() {
         FrmKorpusPreview frmKorpusPreview = new FrmKorpusPreview(mainForm, false);
         ControllerKorpusPreview controllerKorpusPreview = new ControllerKorpusPreview();
@@ -145,6 +140,7 @@ public class ControllerMain {
         ControllerAddNewUser controllerAddNewUser = new ControllerAddNewUser();
         frmAddNewUser.setControllerAddNewUser(controllerAddNewUser);
         controllerAddNewUser.setFrmAddNewUser(frmAddNewUser);
+//        controllerAddNewUser.fillCbData();
         frmAddNewUser.setVisible(true);
     }
 
@@ -161,6 +157,7 @@ public class ControllerMain {
         ControllerPreviewUsers controllerPreviewUsers = new ControllerPreviewUsers();
         pnlPreviewUsers.setControllerPreviewUsers(controllerPreviewUsers);
         controllerPreviewUsers.setPnlPreviewUsers(pnlPreviewUsers);
+        controllerPreviewUsers.setData();
         mainForm.setActivePanel(pnlPreviewUsers);
     }
 

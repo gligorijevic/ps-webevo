@@ -4,11 +4,8 @@
  */
 package view.corpus;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import view.controller.corpus.ControllerKorpusesPreview;
-import view.korpus.tablemodel.CorpusTableModel;
 
 /**
  *

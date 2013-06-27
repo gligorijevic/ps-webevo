@@ -49,6 +49,8 @@ public class FrmReadWebpageData extends javax.swing.JFrame {
 
         jLabel1.setText("Webpage url: ");
 
+        txtFWebpageUrl.setText("http://www.example.com");
+
         txtAWebpage.setEditable(false);
         txtAWebpage.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         txtAWebpage.setColumns(20);

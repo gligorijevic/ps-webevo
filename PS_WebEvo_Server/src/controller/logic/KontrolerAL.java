@@ -14,22 +14,23 @@ package controller.logic;
  * Fakultet organizacionih nauka - Beograd
  *
  */
+import exception.WrongUsernameOrPasswordException;
 import java.io.*;
 import java.net.*;
-//import logic.SO.*;
-import model.GeneralDomainObject;
 import model.users.User;
+import util.RequestOntology;
+import util.TransferObject;
 
 public class KontrolerAL // Kontroler aplikacione logike
 {
-
+    
     static ServerSocket ss;
     static Klijent kl[];
-
+    
     public static void main(String[] args) throws Exception {
         kl = new Klijent[10];
         ss = new ServerSocket(8189);
-
+        
         System.out.println("Podignut je serverski program:");
         for (int brojKlijenta = 0; brojKlijenta < 10; brojKlijenta++) {
             Socket soketS = ss.accept();
@@ -40,31 +41,56 @@ public class KontrolerAL // Kontroler aplikacione logike
 }
 
 class Klijent extends Thread {
-
+    
     public Klijent(Socket soketS1, int brojKlijenta1) {
         soketS = soketS1;
         brojKlijenta = brojKlijenta1;
         System.out.println("Konstruktor");
         start();
     }
-
+    
     @Override
     public void run() {
         try {
-            String signal = "";
+//            String signal = "";
             out = new ObjectOutputStream(soketS.getOutputStream());
             in = new ObjectInputStream(soketS.getInputStream());
-
+            
             System.out.println("run");
             while (true) { // Citanje naziva operacije i racuna
-                String NazivSO = (String) in.readObject();
-                GeneralDomainObject gdo = (GeneralDomainObject) in.readObject();
-
-
-                if (NazivSO.equals("Login") == true) {
-                    User user = (User) gdo;
-                    User login = ControllerAL.getInstance().login(user.getUsername(), user.getPassword());
-                    gdo = login;
+//                String NazivSO = (String) in.readObject();
+                TransferObject to = (TransferObject) in.readObject();
+                System.out.println("Stigao je zahtev" + to.getClientRequestOperation());
+//                GeneralDomainObject gdo = (GeneralDomainObject) in.readObject();
+                if (to.getClientRequestOperation() == RequestOntology.LOGIN) {
+                    User user = (User) to.getClientObject();
+                    System.out.println("Login klijenta: " + user.getUsername());
+                    try {
+                        User login = ControllerAL.getInstance().login(user.getUsername(), user.getPassword());
+                        to.setServerObject(login);
+                        to.setServerMessage("Successful login!");
+                    } catch (WrongUsernameOrPasswordException e) {
+                        to.setServerMessage(e.getMessage());
+                    }
+                } else if (to.getClientRequestOperation() == RequestOntology.REGISTER) {
+                    try {
+                        User user = (User) to.getClientObject();
+//                        ControllerAL.getInstance().register(user);
+                        ControllerAL.getInstance().addNewGDO(user);
+                        to.setServerObject(user);
+                        to.setServerMessage("User " + user.getUsername() + " is successfully registered");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                        System.err.println(ex);
+                        ex.printStackTrace();
+                    }
+                } else if (to.getClientRequestOperation() == RequestOntology.GET_ALL_CORPUSES) {
+                } else if (to.getClientRequestOperation() == RequestOntology.ADD_NEW_CORPUS) {
+                } else if (to.getClientRequestOperation() == RequestOntology.AD_NEW_TAGGEDSENTENCE) {
+                } else if (to.getClientRequestOperation() == RequestOntology.LOAD_WEBPAGE) {
+                } else if (to.getClientRequestOperation() == RequestOntology.GET_ALL_WEBPAGES) {
+                } else if (to.getClientRequestOperation() == RequestOntology.SAVE_WEBPAGE) {
+                } else if (to.getClientRequestOperation() == RequestOntology.TRAIN_NLP_MODEL) {
                 } //                else if (NazivSO.equals("VratiSve") == true) {
                 //                    List<OpstiDomenskiObjekat> odoList = new ArrayList<OpstiDomenskiObjekat>();
                 //                    odoList.add(gdo);
@@ -84,7 +110,7 @@ class Klijent extends Thread {
                 //                    }
                 //                    out.writeObject(signal);
                 //                }  
-                else {
+//                else {
 //                    if (NazivSO.equals("kreirajNovi") == true) {
 //                        signal = KreirajNovi.kreirajNovi(gdo);
 //                    }
@@ -93,18 +119,10 @@ class Klijent extends Thread {
 //                        signal = Pretrazi.Pretrazi(gdo);
 //                    }
 //
-                    if (NazivSO.equals("Zapamti") == true) {
-                        //signal = Zapamti.Zapamti(gdo);
-                        try {
-                            User user = (User) gdo;
-                            ControllerAL.getInstance().register(user);
-                            signal=null;
-                        } catch (Exception exception) {
-                            signal = exception.getMessage();
-                            System.err.println(exception);
-                            exception.printStackTrace();
-                        }
-                    }
+//                    if (NazivSO.equals("Zapamti") == true) {
+                //signal = Zapamti.Zapamti(gdo);
+
+//                    }
 //
 //                    if (NazivSO.equals("Obradi") == true) {
 //                        signal = Obradi.Obradi(gdo);
@@ -113,13 +131,13 @@ class Klijent extends Thread {
 //                    if (NazivSO.equals("Storniraj") == true) {
 //                        signal = Storniraj.Storniraj(gdo);
 //                    }
-                }
+//                }
                 // Slanje promenjenog racuna i signala o uspesnosti operacije
-                out.writeObject(gdo);
-                out.writeObject(signal);
-
+//                out.writeObject(gdo);
+//                out.writeObject(signal);
+                out.writeObject(to);
             }
-
+            
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();

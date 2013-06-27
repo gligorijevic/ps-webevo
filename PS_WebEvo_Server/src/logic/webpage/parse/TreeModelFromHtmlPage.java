@@ -39,9 +39,9 @@ public class TreeModelFromHtmlPage {
         htmlpage.setHtmlPageText(htmlPageDocument.html());
         htmlpage.setHtmlPageName(htmlPageDocument.title());
         htmlpage.setHtmlPageDescription(htmlPageDocument.title());
-        HtmlTag startTag = new HtmlTag();
-        copyStructure(rootElement, startTag);
-        htmlpage.getHtmlTagList().add(startTag);
+//        HtmlTag startTag = new HtmlTag();
+//        copyStructure(rootElement, startTag);
+//        htmlpage.getHtmlTagList().add(startTag);
         System.out.println("finished copying html structure");
     }
 

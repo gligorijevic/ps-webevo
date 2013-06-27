@@ -81,6 +81,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFWebpageUrl">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="http://www.example.com"/>
+          </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>

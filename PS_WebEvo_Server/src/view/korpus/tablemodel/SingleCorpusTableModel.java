@@ -75,8 +75,8 @@ public class SingleCorpusTableModel extends AbstractTableModel {
 //                persistence.KorpusPersistence.getInstance().getKorpusFromId(taggedSentence.getKorpus().getId()).getTaggedSentenceFromKorpusById(taggedSentence.getId()).setTags(new ArrayList<>(Arrays.asList(fix.split(" "))));
                 break;
         }
-        DBBroker.getInstance().updateTaggedSentence(taggedSentence);
-
+        DBBroker.getInstance().updateGDO(taggedSentence);
+        
         fireTableDataChanged();
     }
     

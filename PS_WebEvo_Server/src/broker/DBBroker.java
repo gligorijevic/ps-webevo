@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import model.GeneralDomainObject;
 import model.corpus.Corpus;
 import model.corpus.TaggedSentence;
@@ -44,22 +43,21 @@ public class DBBroker {
     }
 
     /*Beginning of GeneralDomainObject calls */
-    public List<GeneralDomainObject> returnAll(List<GeneralDomainObject> odoList) throws Exception {
-        if (odoList == null) {
-            odoList = new ArrayList<GeneralDomainObject>();
-        }
-        String namedQuery = odoList.get(0).vratiImeKlase() + ".findAll";
+    public List<GeneralDomainObject> returnAll(GeneralDomainObject gdo) {
+//        if (odoList == null) {
+        List<GeneralDomainObject> odoList = new ArrayList<GeneralDomainObject>();
+//        }
+        String namedQuery = gdo.vratiImeKlase() + ".findAll";
         try {
             odoList = em.createNamedQuery(namedQuery).getResultList();
             logMessage = logMessage + "\n Uspesno vraćanje svih " + odoList.get(0).vratiNazivObjekta() + "a iz baze.";
             //List<OpstiDomenskiObjekat> lista = em.createQuery("SELECT objd FROM "+tableName+" objd").getResultList();
             //return true;
-            return odoList;
         } catch (Exception e) {
             logMessage = logMessage + "\n Greska u upitu. Neuspesno vraćanje svih " + odoList.get(0).vratiNazivObjekta() + " iz baze.";
-            throw e;
             //return false;
         }
+        return odoList;
     }
 
     public List<GeneralDomainObject> returnGDOforCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) throws Exception {
@@ -90,7 +88,7 @@ public class DBBroker {
 
     public void createNew(GeneralDomainObject odo) throws Exception {
         try {
-            System.out.println("Usao u kreiraj novi");
+            System.out.println("Creating new" + odo.vratiImeKlase());
             em.persist(odo);
             System.out.println("Prosao persist");
             em.flush();
@@ -130,16 +128,18 @@ public class DBBroker {
     }
 
     public boolean updateGDO(GeneralDomainObject d) {
+        System.out.println("Updating " + d.vratiImeKlase());
         GeneralDomainObject resultODO = em.find(d.getClass(), d.vratiID());
 
         if (resultODO == null) {
             logMessage = logMessage + "\n " + d.vratiImeKlase() + " nije pronadjen";
             return false;
         } else {
-            d.prekopirajVrednostiAtributa(resultODO);
+//            d.prekopirajVrednostiAtributa(resultODO);
             em.merge(d);
 //            em.persist(resultODO);
-//            em.flush();
+            em.flush();
+            System.out.println(d.vratiImeKlase() + " is updated.");
 //           // em.refresh(resultODO);
             return true;
         }
@@ -191,6 +191,34 @@ public class DBBroker {
 
     }
 
+    public int getMaxId(GeneralDomainObject gdo) {
+//        int result = (Integer) em.createQuery("select max(gdo.websiteId) from ? gdo")
+//                .setParameter(1, gdo.vratiImeKlase()).getSingleResult();
+//        Query query = em.createQuery("SELECT MAX(w.websiteId) FROM Website w", Integer.class);
+        Integer result = em.createQuery("SELECT MAX(w.websiteId) FROM Website w", Integer.class).getSingleResult();
+        System.out.println(result);
+        return result;
+
+    }
+
+    public User loginUser(User loginUser) {
+//        List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=?").setParameter(1, loginUser.getUsername()).getResultList();
+        List<User> res = em.createNamedQuery("User.findByUsernameAndPassword").setParameter("username", loginUser.getUsername()).setParameter("password", loginUser.getPassword()).getResultList();
+        System.out.println(res.size());
+        return res.get(0);
+    }
+
+    public void registerNewUser(User regUser) throws Exception {
+        List<User> resultList = em.createNamedQuery("User.findByUsername").setParameter("username", regUser.getUsername()).getResultList();
+        if (resultList.size() == 1) {
+            regUser = resultList.get(0);
+            throw new Exception("User already exists");
+        } else {
+            em.persist(regUser);
+            em.refresh(regUser);
+        }
+    }
+
     /* Ending of GeneralDomainObject calls*/
     public void addNewCorpus(Corpus corpus) throws Exception {
         EntityManager em = emf.createEntityManager();
@@ -217,6 +245,7 @@ public class DBBroker {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
+            ex.printStackTrace();
             em.getTransaction().rollback();
             throw ex;
         }
@@ -295,11 +324,18 @@ public class DBBroker {
                     em.merge(website);
                 } else {
                     em.persist(website);
+                    Website site = em.find(Website.class, website.getWebsiteId());
+                    System.out.println("site");
                 }
             } else {
+                System.out.println("ubacivanje novog website-a");
+//                website.setWebsiteId(getMaxId(website) + 1);
                 em.persist(website);
                 em.flush();
                 em.refresh(website);
+//                Website site = em.find(Website.class, website.getWebsiteId());
+//                System.out.println("site");
+//                em.merge(website);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -326,23 +362,4 @@ public class DBBroker {
         em.close();
         return res;
     }
-
-    public User loginUser(User loginUser) {
-//        List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=?").setParameter(1, loginUser.getUsername()).getResultList();
-        List<User> res = em.createNamedQuery("User.findByUsernameAndPassword").setParameter("username", loginUser.getUsername()).setParameter("password", loginUser.getPassword()).getResultList();
-        System.out.println(res.size());
-        return res.get(0);
-    }
-
-    public void registerNewUser(User regUser) throws Exception {
-        List<User> resultList = em.createNamedQuery("User.findByUsername").setParameter("username", regUser.getUsername()).getResultList();
-        if(resultList.size()==1){
-            regUser = resultList.get(0);
-            throw  new Exception("User already exists");
-        }else{
-            em.persist(regUser);
-        }
-
-    }
-
 }

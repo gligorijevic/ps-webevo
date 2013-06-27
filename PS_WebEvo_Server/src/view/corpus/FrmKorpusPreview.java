@@ -5,9 +5,6 @@
 package view.corpus;
 
 import view.controller.corpus.ControllerKorpusPreview;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.corpus.Corpus;
 

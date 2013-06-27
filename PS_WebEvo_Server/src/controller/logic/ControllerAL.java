@@ -5,9 +5,13 @@
 package controller.logic;
 
 import broker.DBBroker;
+import exception.UserAlreadyExistsException;
+import exception.WrongUsernameOrPasswordException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import logic.login.Login;
@@ -53,6 +57,13 @@ public class ControllerAL {
         }
     }
 
+    public List<GeneralDomainObject> returnAll(GeneralDomainObject gdo) {
+        DBBroker.getInstance().beginTransaction();
+        List<GeneralDomainObject> result = DBBroker.getInstance().returnAll(gdo);
+        DBBroker.getInstance().closeTransaction();
+        return result;
+    }
+
     public List<GeneralDomainObject> returnGDOsByCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) throws Exception {
         List<GeneralDomainObject> result;
         DBBroker.getInstance().beginTransaction();
@@ -95,15 +106,15 @@ public class ControllerAL {
     public void updateGDO(GeneralDomainObject gdo) {
         DBBroker.getInstance().beginTransaction();
         DBBroker.getInstance().updateGDO(gdo);
-        DBBroker.getInstance().closeTransaction();
+        DBBroker.getInstance().commitTransaction();
     }
 
     /* Ending of GeneralDomainObject calls */
-    public User login(String username, String password) {
+    public User login(String username, String password) throws WrongUsernameOrPasswordException {
         return Login.login(username, password);
     }
 
-    public void register(User regUser) throws Exception {
+    public void register(User regUser) throws UserAlreadyExistsException  {
         Register.register(regUser);
     }
 

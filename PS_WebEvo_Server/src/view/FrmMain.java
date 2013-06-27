@@ -76,7 +76,6 @@ public class FrmMain extends javax.swing.JFrame {
         mAnotateText = new javax.swing.JMenu();
         mAdminister = new javax.swing.JMenu();
         miAddNewUser = new javax.swing.JMenuItem();
-        miRemoveSelectedUser = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         mAbout = new javax.swing.JMenu();
         miAboutWebEvo = new javax.swing.JMenuItem();
@@ -192,14 +191,6 @@ public class FrmMain extends javax.swing.JFrame {
         });
         mAdminister.add(miAddNewUser);
 
-        miRemoveSelectedUser.setText("Remove selected user");
-        miRemoveSelectedUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miRemoveSelectedUserActionPerformed(evt);
-            }
-        });
-        mAdminister.add(miRemoveSelectedUser);
-
         jMenuItem3.setText("Preview all users");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -278,10 +269,6 @@ public class FrmMain extends javax.swing.JFrame {
     private void miAddNewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddNewUserActionPerformed
         controllerMain.frmAddNewUser();
     }//GEN-LAST:event_miAddNewUserActionPerformed
-
-    private void miRemoveSelectedUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRemoveSelectedUserActionPerformed
-        controllerMain.frmRemoveSelecterUser();
-    }//GEN-LAST:event_miRemoveSelectedUserActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         controllerMain.pnlPreviewUsers();
@@ -365,7 +352,6 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem miCorpusPreview;
     private javax.swing.JMenuItem miLoadWebpageFromUrl;
     private javax.swing.JMenuItem miPreviewCorpus;
-    private javax.swing.JMenuItem miRemoveSelectedUser;
     private javax.swing.JMenuItem miTraingTagger;
     private javax.swing.JPanel pnlMain;
     // End of variables declaration//GEN-END:variables

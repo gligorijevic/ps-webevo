@@ -20,6 +20,7 @@ public class ControllerAddCorpus {
     }
     
     public void addCorpus(Corpus corpus) throws Exception{
-        ControllerAL.getInstance().addNewCorpus(corpus);
+//        ControllerAL.getInstance().addNewCorpus(corpus);
+        ControllerAL.getInstance().addNewGDO(corpus);
     }
 }
