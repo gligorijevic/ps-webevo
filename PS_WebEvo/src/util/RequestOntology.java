@@ -16,7 +16,10 @@ public class RequestOntology {
     public static final int AD_NEW_TAGGEDSENTENCE = 5;
     public static final int TRAIN_NLP_MODEL = 6;
     public static final int LOAD_WEBPAGE = 7;
-    public static final int GET_ALL_WEBPAGES = 8;
+    public static final int GET_ALL_WEBSITES = 8;
     public static final int SAVE_WEBPAGE = 9;
+    public static final int REMOVE_CORPUS = 10;
+    public static final int UPDATE_TAGGEDSENTENCE = 11;
+    public static final int UPDATE_CORPUS = 12;
     
 }
