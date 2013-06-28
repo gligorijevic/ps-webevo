@@ -22,7 +22,7 @@ import view.OpstaEkranskaForma;
  */
 public class FrmRegister extends JDialog implements OpstaEkranskaForma {
 
-    ControllerAddNewUser ctrlAdmin;
+    ControllerRegisterNewUser ctrlAdmin;
 
     /**
      * Creates new form FrmAdministrator
@@ -130,12 +130,11 @@ public class FrmRegister extends JDialog implements OpstaEkranskaForma {
 
     private void btnRegisterUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterUserActionPerformed
         try {
-            ControllerAddNewUser controllerAddNewUser= new ControllerAddNewUser();
+            ControllerRegisterNewUser controllerAddNewUser= new ControllerRegisterNewUser();
             controllerAddNewUser.setOef(this);
             controllerAddNewUser.setFrmAddNewUser(this);
             controllerAddNewUser.KonvertujGrafickiObjekatUDomenskiObjekat();
-            String SOZapamti = controllerAddNewUser.SOZapamti();
-            JOptionPane.showMessageDialog(this, SOZapamti);
+            controllerAddNewUser.register();
             
             this.dispose();
         } catch (IOException ex) {
@@ -220,7 +219,7 @@ public class FrmRegister extends JDialog implements OpstaEkranskaForma {
 
     private void initializeController() {
         try {
-            ctrlAdmin = new ControllerAddNewUser();
+            ctrlAdmin = new ControllerRegisterNewUser();
         } catch (IOException ex) {
             Logger.getLogger(FrmRegister.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -304,7 +303,7 @@ public class FrmRegister extends JDialog implements OpstaEkranskaForma {
 
 
 
-    public void setCtrlAdmin(ControllerAddNewUser ctrlAdmin) {
+    public void setCtrlAdmin(ControllerRegisterNewUser ctrlAdmin) {
         this.ctrlAdmin = ctrlAdmin;
     }
 }

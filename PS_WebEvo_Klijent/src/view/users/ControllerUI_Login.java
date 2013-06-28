@@ -18,46 +18,44 @@ import view.OpstaEkranskaForma;
  *
  * @author Djordje
  */
-public class ControllerUI_Login extends OpstiKontrolerKI{
+public class ControllerUI_Login extends OpstiKontrolerKI {
 
     public void setOdo(GeneralDomainObject odo) {
-        this.odo = odo;
+        this.gdo = odo;
     }
 
     public void setOef(OpstaEkranskaForma oef) {
         this.oef = oef;
     }
 
-   ControllerUI_Login() throws IOException {
-       super();
-   }
-    
+    ControllerUI_Login() throws IOException {
+        super();
+    }
+
     @Override
     public void KonvertujGrafickiObjekatUDomenskiObjekat() {
         User user = new User();
-        FrmLogin fst=(FrmLogin) oef;
+        FrmLogin fst = (FrmLogin) oef;
         user.setUsername(TypeConverter.Konvertuj(fst.getTfUserName(), signal));
         user.setPassword(String.valueOf(fst.getPfPassword().getPassword()));
-        odo=user;
+        System.out.println("Login: " + user.getUsername() + " " + user.getPassword());
+        this.gdo = user;
     }
 
     @Override
     public void KonvertujDomenskiObjekatUGrafickiObjekat() {
-        if(odo!=null){
-            JOptionPane.showMessageDialog((FrmLogin)oef,"Welcome, "+((User)odo).getFirstName()+" "+((User)odo).getLastName() +"! :)");
-            ControllerMain cmain= new ControllerMain();
-            FrmMain frmMain= new FrmMain();
+        if (gdo != null) {
+            JOptionPane.showMessageDialog((FrmLogin) oef, "Welcome, " + ((User) gdo).getFirstName() + " " + ((User) gdo).getLastName() + "! :)");
+            ControllerMain cmain = new ControllerMain();
+            FrmMain frmMain = new FrmMain();
+            frmMain.setControllerMain(cmain);
             cmain.setMainForm(frmMain);
             frmMain.setVisible(true);
-            
-            ((FrmLogin)oef).dispose();
-        }
-        else{
-            JOptionPane.showMessageDialog((FrmLogin)oef,"Wrong username or password!", "Error", JOptionPane.ERROR_MESSAGE);
-           ((FrmLogin)oef).getPfPassword().setText("");
+
+            ((FrmLogin) oef).dispose();
+        } else {
+            JOptionPane.showMessageDialog((FrmLogin) oef, to.getServerMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ((FrmLogin) oef).getPfPassword().setText("");
         }
     }
-    
-
-   
 }

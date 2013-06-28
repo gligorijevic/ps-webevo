@@ -23,7 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.GeneralDomainObject;
 import model.users.User;
-import view.OpstaEkranskaForma;
+import util.RequestOntology;
+import util.TransferObject;
 
 public abstract class OpstiKontrolerKI {
 
@@ -31,13 +32,15 @@ public abstract class OpstiKontrolerKI {
     protected ObjectOutputStream out;
     protected ObjectInputStream in;
     protected String signal;
-    protected GeneralDomainObject odo;
+    protected GeneralDomainObject gdo;
+    protected TransferObject to;
     protected OpstaEkranskaForma oef;
 
     protected OpstiKontrolerKI() throws IOException {
         soketK = new Socket("127.0.0.1", 8189);
         out = new ObjectOutputStream(soketK.getOutputStream());
         in = new ObjectInputStream(soketK.getInputStream());
+        System.out.println("Povezan sa serverom.");
     }
 
     public String pritisakTipke(KeyEvent evt) {
@@ -69,7 +72,7 @@ public abstract class OpstiKontrolerKI {
     }
 
     public String SOPretrazi() {
-        odo = oef.kreirajObjekat();
+        gdo = oef.kreirajObjekat();
         KonvertujGrafickiObjekatUDomenskiObjekat();
         /**
          * ****** POZIVA SE KONTROLER APL. LOGIKE DA IZVRSI SISTEMSKU OPERACIJU
@@ -85,7 +88,7 @@ public abstract class OpstiKontrolerKI {
     }
 
     public String SOKreirajNovi() {
-        odo = oef.kreirajObjekat();
+        gdo = oef.kreirajObjekat();
         /**
          * ****** POZIVA SE KONTROLER APL. LOGIKE DA IZVRSI SISTEMSKU OPERACIJU
          * ********
@@ -98,18 +101,12 @@ public abstract class OpstiKontrolerKI {
         return signal;
     }
 
-    public User login(){
-        odo = oef.kreirajObjekat();
-        KonvertujGrafickiObjekatUDomenskiObjekat();
-        signal = pozivSO("Login");
-        KonvertujDomenskiObjekatUGrafickiObjekat();
-        return (User)odo;
-    }
-    
-    
     public String SOZapamti() {
-        odo = oef.kreirajObjekat();
+        to = new TransferObject();
+        gdo = oef.kreirajObjekat();
         KonvertujGrafickiObjekatUDomenskiObjekat();
+        to.setClientObject(gdo);
+        to.setClientRequestOperation(RequestOntology.REGISTER);
         /**
          * ****** POZIVA SE KONTROLER APL. LOGIKE DA IZVRSI SISTEMSKU OPERACIJU
          */
@@ -122,7 +119,7 @@ public abstract class OpstiKontrolerKI {
     }
 
     public String SOStorniraj() {
-        odo = oef.kreirajObjekat();
+        gdo = oef.kreirajObjekat();
         KonvertujGrafickiObjekatUDomenskiObjekat();
         /**
          * ****** POZIVA SE KONTROLER APL. LOGIKE DA IZVRSI SISTEMSKU OPERACIJU
@@ -137,7 +134,7 @@ public abstract class OpstiKontrolerKI {
     }
 
     public String SOObradi() {
-        odo = oef.kreirajObjekat();
+        gdo = oef.kreirajObjekat();
         KonvertujGrafickiObjekatUDomenskiObjekat();
         /**
          * ****** POZIVA SE KONTROLER APL. LOGIKE DA IZVRSI SISTEMSKU OPERACIJU
@@ -152,11 +149,11 @@ public abstract class OpstiKontrolerKI {
     }
 
     public List<GeneralDomainObject> SOVratiSve() {
-        odo = oef.kreirajObjekat();
+        gdo = oef.kreirajObjekat();
         List<GeneralDomainObject> odoList = null;
         try {
             out.writeObject("VratiSve");
-            out.writeObject(odo);
+            out.writeObject(gdo);
         } catch (IOException ex) {
             Logger.getLogger(OpstiKontrolerKI.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Neuspesno slanje objekata ka serveru.");
@@ -177,18 +174,16 @@ public abstract class OpstiKontrolerKI {
 
     }
 
-   
-
     String pozivSO(String nazivSO) {
         try {
             out.writeObject(nazivSO);
-            out.writeObject(odo);
+            out.writeObject(gdo);
         } catch (IOException io) {
             return "Neuspesno slanje objekata ka serveru.";
         }
 
         try {
-            odo = (GeneralDomainObject) in.readObject();
+            gdo = (GeneralDomainObject) in.readObject();
             signal = (String) in.readObject();
         } catch (Exception e) {
             return "Neuspesno citanje objekata sa servera";
@@ -196,6 +191,47 @@ public abstract class OpstiKontrolerKI {
         return signal;
     }
 
+    /* Korisne metode koje se koriste */
+    public User login() {
+        to = new TransferObject();
+        gdo = oef.kreirajObjekat();
+
+        KonvertujGrafickiObjekatUDomenskiObjekat();
+        to.setClientObject(gdo);
+        to.setClientRequestOperation(RequestOntology.LOGIN);
+//        signal = pozivSO("Login");
+        callSystemOperation();
+        KonvertujDomenskiObjekatUGrafickiObjekat();
+        return (User) gdo;
+    }
+
+    public String callSystemOperation() {
+        try {
+            out.writeObject(to);
+        } catch (IOException io) {
+            return io.getMessage();
+        }
+        try {
+            to = (TransferObject) in.readObject();
+            try {
+                gdo = (GeneralDomainObject) to.getServerObject();
+                if (gdo == null) {
+                    return "Neuspesna komunikacija";
+                }
+            } catch (ClassCastException ex) {
+                gdo = null;
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            return "Neuspesno citanje objekata sa servera";
+        } catch (ClassNotFoundException ex) {
+            System.err.println(ex.getMessage());
+            return "Pogresno kastovanje objekata";
+        }
+        return signal;
+    }
+
+    /* Kraj korisnih metoda koje se koriste */
     abstract public void KonvertujGrafickiObjekatUDomenskiObjekat();
 
     abstract public void KonvertujDomenskiObjekatUGrafickiObjekat();

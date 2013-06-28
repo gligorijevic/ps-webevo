@@ -5,14 +5,9 @@
 package view;
 
 import controller.main.ControllerMain;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -84,6 +79,7 @@ public class FrmMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Web Evoluton");
+        setBounds(new java.awt.Rectangle(200, 100, 0, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/wc.png"))); // NOI18N
@@ -216,47 +212,75 @@ public class FrmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miAddSentenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddSentenceActionPerformed
-//        controllerMain.addTaggedSentenceForm(this);
+        try {
+            controllerMain.addTaggedSentenceForm(this);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miAddSentenceActionPerformed
 
     private void miCorpusPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCorpusPreviewActionPerformed
-//        controllerMain.frmKorpusesPreview(this);
+        try {
+            controllerMain.frmKorpusesPreview(this);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miCorpusPreviewActionPerformed
 
     private void miPreviewCorpusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPreviewCorpusActionPerformed
-//        controllerMain.frmKorpusPreview();
+        try {
+            controllerMain.frmKorpusPreview();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miPreviewCorpusActionPerformed
 
     private void miAddCorpusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddCorpusActionPerformed
-//        controllerMain.frmAddKorpus();
+        try {
+            controllerMain.frmAddKorpus();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miAddCorpusActionPerformed
 
     private void miTraingTaggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTraingTaggerActionPerformed
-//        controllerMain.frmTrainingTaggerModel();
+        try {
+            controllerMain.frmTrainingTaggerModel();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miTraingTaggerActionPerformed
 
     private void miLoadWebpageFromUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLoadWebpageFromUrlActionPerformed
-//        controllerMain.frmLoadWebpage();
+        try {
+            controllerMain.frmLoadWebpage();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_miLoadWebpageFromUrlActionPerformed
 
     private void miAboutWebEvoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutWebEvoActionPerformed
-//        controllerMain.frmAboutWebEvo();
+        controllerMain.frmAboutWebEvo();
     }//GEN-LAST:event_miAboutWebEvoActionPerformed
 
     private void miAboutLingPipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutLingPipeActionPerformed
-//        controllerMain.frmAboutLingPipe();
+        controllerMain.frmAboutLingPipe();
     }//GEN-LAST:event_miAboutLingPipeActionPerformed
 
     private void miAboutJsoupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutJsoupActionPerformed
-//        controllerMain.frmAboutJSoup();
+        controllerMain.frmAboutJSoup();
     }//GEN-LAST:event_miAboutJsoupActionPerformed
 
     private void miAboutJpaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAboutJpaActionPerformed
-//        controllerMain.frmAboutJpa();
+        controllerMain.frmAboutJpa();
     }//GEN-LAST:event_miAboutJpaActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-//        controllerMain.frmReadWebpageData();
+        try {
+            controllerMain.frmReadWebpageData();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -288,6 +312,7 @@ public class FrmMain extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new FrmMain().setVisible(true);
             }
