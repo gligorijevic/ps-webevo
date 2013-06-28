@@ -17,45 +17,51 @@ package controller.logic;
 import exception.WrongUsernameOrPasswordException;
 import java.io.*;
 import java.net.*;
+import java.util.List;
+import model.GeneralDomainObject;
+import model.corpus.Corpus;
+import model.corpus.TaggedSentence;
 import model.users.User;
+import model.website.Website;
+import org.jsoup.nodes.Document;
 import util.RequestOntology;
 import util.TransferObject;
 
 public class KontrolerAL // Kontroler aplikacione logike
 {
-    
+
     static ServerSocket ss;
     static Klijent kl[];
-    
+
     public static void main(String[] args) throws Exception {
         kl = new Klijent[10];
         ss = new ServerSocket(8189);
-        
+
         System.out.println("Podignut je serverski program:");
         for (int brojKlijenta = 0; brojKlijenta < 10; brojKlijenta++) {
             Socket soketS = ss.accept();
-            System.out.println("Klijent " + (brojKlijenta + 1));
+            System.out.println("Stigao klijent " + (brojKlijenta + 1));
             kl[brojKlijenta] = new Klijent(soketS, brojKlijenta + 1);
         }
     }
 }
 
 class Klijent extends Thread {
-    
+
     public Klijent(Socket soketS1, int brojKlijenta1) {
         soketS = soketS1;
         brojKlijenta = brojKlijenta1;
         System.out.println("Konstruktor");
         start();
     }
-    
+
     @Override
     public void run() {
         try {
 //            String signal = "";
             out = new ObjectOutputStream(soketS.getOutputStream());
             in = new ObjectInputStream(soketS.getInputStream());
-            
+
             System.out.println("run");
             while (true) { // Citanje naziva operacije i racuna
 //                String NazivSO = (String) in.readObject();
@@ -85,13 +91,79 @@ class Klijent extends Thread {
                         ex.printStackTrace();
                     }
                 } else if (to.getClientRequestOperation() == RequestOntology.GET_ALL_CORPUSES) {
+                    List<Corpus> allCorpuses = (List<Corpus>) to.getClientObject();
+                    List<GeneralDomainObject> returnAll = ControllerAL.getInstance().returnAll(new Corpus());
+                    for (GeneralDomainObject generalDomainObject : returnAll) {
+                        allCorpuses.add((Corpus) generalDomainObject);
+                    }
+                    for (Corpus c : allCorpuses) {
+                        c.getTaggedSentenceList().size();
+                    }
+                    to.setServerObject(allCorpuses);
+                    to.setServerMessage("All courpuses have been found.");
                 } else if (to.getClientRequestOperation() == RequestOntology.ADD_NEW_CORPUS) {
+                    Corpus newCorpus = (Corpus) to.getClientObject();
+                    try {
+                        ControllerAL.getInstance().addNewGDO(newCorpus);
+                        to.setServerMessage("New corus has been sccessfuly saved.");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                    }
                 } else if (to.getClientRequestOperation() == RequestOntology.AD_NEW_TAGGEDSENTENCE) {
+                    TaggedSentence ts = (TaggedSentence) to.getClientObject();
+                    try {
+                        ControllerAL.getInstance().addNewGDO(ts);
+                        to.setServerMessage("New taggedSentence has been sccessfuly saved.");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                    }
                 } else if (to.getClientRequestOperation() == RequestOntology.LOAD_WEBPAGE) {
-                } else if (to.getClientRequestOperation() == RequestOntology.GET_ALL_WEBPAGES) {
+                    String webpageUrl = (String) to.getClientObject();
+                    try {
+                        Document parseWebpageDocumentFromUrl = ControllerAL.getInstance().parseWebpageDocumentFromUrl(webpageUrl);
+                        to.setServerObject(parseWebpageDocumentFromUrl);
+                        to.setServerMessage("Webpage has been successfully loaded");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                    }
+                } else if (to.getClientRequestOperation() == RequestOntology.GET_ALL_WEBSITES) {
+                    List<Website> allWebsites = (List<Website>) to.getClientObject();
+                    List<GeneralDomainObject> returnAll = ControllerAL.getInstance().returnAll(new Website());
+                    for (GeneralDomainObject generalDomainObject : returnAll) {
+                        allWebsites.add((Website) generalDomainObject);
+                    }
+                    to.setServerMessage("All courpuses have been found.");
                 } else if (to.getClientRequestOperation() == RequestOntology.SAVE_WEBPAGE) {
+                    Website ts = (Website) to.getClientObject();
+                    try {
+                        ControllerAL.getInstance().addNewGDO(ts);
+                        to.setServerMessage("New webpage has been sccessfuly saved.");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                    }
                 } else if (to.getClientRequestOperation() == RequestOntology.TRAIN_NLP_MODEL) {
-                } //                else if (NazivSO.equals("VratiSve") == true) {
+                    Corpus corpus = (Corpus) to.getServerObject();
+                    String trainingDone = ControllerAL.getInstance().startTraining(corpus);
+                    to.setServerObject(trainingDone);
+                    to.setServerMessage("Training done");
+                } else if (to.getClientRequestOperation() == RequestOntology.TRAIN_NLP_MODEL) {
+                    Corpus corpus = (Corpus) to.getServerObject();
+                    ControllerAL.getInstance().deleteGDO(corpus);
+                    to.setServerObject(null);
+                    to.setServerMessage("Removing corpus done");
+                } else if (to.getClientRequestOperation() == RequestOntology.UPDATE_TAGGEDSENTENCE) {
+                    TaggedSentence ts = (TaggedSentence) to.getServerObject();
+                    ControllerAL.getInstance().updateGDO(ts);
+                    to.setServerObject(ts);
+                    to.setServerMessage("Updateing tagged sentence is done");
+                } else if (to.getClientRequestOperation() == RequestOntology.UPDATE_CORPUS) {
+                    Corpus corpus = (Corpus) to.getServerObject();
+                    ControllerAL.getInstance().updateGDO(corpus);
+                    to.setServerObject(corpus);
+                    to.setServerMessage("Updateing tagged sentence is done");
+                }
+
+                //                else if (NazivSO.equals("VratiSve") == true) {
                 //                    List<OpstiDomenskiObjekat> odoList = new ArrayList<OpstiDomenskiObjekat>();
                 //                    odoList.add(gdo);
                 //                    odoList = VratiSve.VratiSve(odoList, signal);
@@ -136,8 +208,9 @@ class Klijent extends Thread {
 //                out.writeObject(gdo);
 //                out.writeObject(signal);
                 out.writeObject(to);
+                out.flush();
+                out.reset();
             }
-            
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
