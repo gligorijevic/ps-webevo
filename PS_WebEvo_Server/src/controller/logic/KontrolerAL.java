@@ -18,10 +18,12 @@ import exception.WrongUsernameOrPasswordException;
 import java.io.*;
 import java.net.*;
 import java.util.List;
+import javax.swing.tree.DefaultTreeModel;
 import model.GeneralDomainObject;
 import model.corpus.Corpus;
 import model.corpus.TaggedSentence;
 import model.users.User;
+import model.website.HtmlPage;
 import model.website.Website;
 import org.jsoup.nodes.Document;
 import util.RequestOntology;
@@ -121,8 +123,19 @@ class Klijent extends Thread {
                     String webpageUrl = (String) to.getClientObject();
                     try {
                         Document parseWebpageDocumentFromUrl = ControllerAL.getInstance().parseWebpageDocumentFromUrl(webpageUrl);
-                        to.setServerObject(parseWebpageDocumentFromUrl);
+                        to.setServerObject(parseWebpageDocumentFromUrl.html());
                         to.setServerMessage("Webpage has been successfully loaded");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                    }
+                } else if (to.getClientRequestOperation() == RequestOntology.GET_WEBPAGE_TREEMODEL) {
+                    String webpageUrl = (String) to.getClientObject();
+                    try {
+                        Document parseWebpageDocumentFromUrl = ControllerAL.getInstance().parseWebpageDocumentFromUrl(webpageUrl);
+                        DefaultTreeModel treeModelFromWebpage = ControllerAL.getInstance().getTreeModelFromWebpage(parseWebpageDocumentFromUrl);
+//                        Document parseWebpageDocumentFromUrl = ControllerAL.getInstance().parseWebpageDocumentFromUrl(webpageUrl);
+                        to.setServerObject(treeModelFromWebpage);
+                        to.setServerMessage("Webpage has been successfully copieds");
                     } catch (Exception ex) {
                         to.setServerMessage(ex.getMessage());
                     }
@@ -132,6 +145,10 @@ class Klijent extends Thread {
                     for (GeneralDomainObject generalDomainObject : returnAll) {
                         allWebsites.add((Website) generalDomainObject);
                     }
+                    for (Website w : allWebsites) {
+                        w.getHtmlPageList().size();
+                    }
+                    to.setServerObject(allWebsites);
                     to.setServerMessage("All courpuses have been found.");
                 } else if (to.getClientRequestOperation() == RequestOntology.SAVE_WEBPAGE) {
                     Website ts = (Website) to.getClientObject();
@@ -142,7 +159,7 @@ class Klijent extends Thread {
                         to.setServerMessage(ex.getMessage());
                     }
                 } else if (to.getClientRequestOperation() == RequestOntology.TRAIN_NLP_MODEL) {
-                    Corpus corpus = (Corpus) to.getServerObject();
+                    Corpus corpus = (Corpus) to.getClientObject();
                     String trainingDone = ControllerAL.getInstance().startTraining(corpus);
                     to.setServerObject(trainingDone);
                     to.setServerMessage("Training done");
@@ -161,6 +178,17 @@ class Klijent extends Thread {
                     ControllerAL.getInstance().updateGDO(corpus);
                     to.setServerObject(corpus);
                     to.setServerMessage("Updateing tagged sentence is done");
+                } else if (to.getClientRequestOperation() == RequestOntology.COPY_WEBPAGE_STRUCTURE) {
+                    String webpageUrl = (String) to.getClientObject();
+                    try {
+                        Document parseWebpageDocumentFromUrl = ControllerAL.getInstance().parseWebpageDocumentFromUrl(webpageUrl);
+                        HtmlPage htmlPage = new HtmlPage();
+                        ControllerAL.getInstance().copyHtmlPageStructure(parseWebpageDocumentFromUrl, htmlPage);
+                        to.setServerObject(htmlPage);
+                        to.setServerMessage("HtmlPage has been successfully copied");
+                    } catch (Exception ex) {
+                        to.setServerMessage(ex.getMessage());
+                    }
                 }
 
                 //                else if (NazivSO.equals("VratiSve") == true) {

@@ -4,7 +4,7 @@
  */
 package view.korpus.tablemodel;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import controller.logic.ControllerAL;
 import java.util.List;
 import java.util.logging.Level;

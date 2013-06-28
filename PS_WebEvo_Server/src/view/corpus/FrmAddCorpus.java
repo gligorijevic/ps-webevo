@@ -4,7 +4,7 @@
  */
 package view.corpus;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import view.controller.corpus.ControllerAddCorpus;
 import javax.swing.JOptionPane;
 import model.corpus.Corpus;

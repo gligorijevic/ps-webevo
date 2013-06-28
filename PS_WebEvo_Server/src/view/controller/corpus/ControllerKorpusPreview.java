@@ -4,7 +4,7 @@
  */
 package view.controller.corpus;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class ControllerKorpusPreview {
     }
 
     public void removeKorpus(Corpus corpus) throws Exception {
-        DBBroker.getInstance().removeCorpus(corpus);
+        JPABroker.getInstance().removeCorpus(corpus);
     }
     
     

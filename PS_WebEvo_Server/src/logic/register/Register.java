@@ -4,7 +4,7 @@
  */
 package logic.register;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import exception.UserAlreadyExistsException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,12 +24,12 @@ public class Register {
      */
     public static void register(GeneralDomainObject gdo) throws UserAlreadyExistsException {
         User regUser = (User) gdo;
-        DBBroker.getInstance().beginTransaction();
+        JPABroker.getInstance().beginTransaction();
         try {
-            DBBroker.getInstance().registerNewUser(regUser);
-            DBBroker.getInstance().commitTransaction();
+            JPABroker.getInstance().registerNewUser(regUser);
+            JPABroker.getInstance().commitTransaction();
         } catch (Exception ex) {
-            DBBroker.getInstance().rollbackTransaction();
+            JPABroker.getInstance().rollbackTransaction();
             throw new UserAlreadyExistsException("User with this username already exists.");
         }
     }

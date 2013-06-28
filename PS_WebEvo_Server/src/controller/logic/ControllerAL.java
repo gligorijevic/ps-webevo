@@ -4,7 +4,7 @@
  */
 package controller.logic;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import exception.UserAlreadyExistsException;
 import exception.WrongUsernameOrPasswordException;
 import java.io.IOException;
@@ -48,65 +48,65 @@ public class ControllerAL {
 
     /* Beginning of GeneralDomainObject calls */
     public void addNewGDO(GeneralDomainObject gdo) {
-        DBBroker.getInstance().beginTransaction();
+        JPABroker.getInstance().beginTransaction();
         try {
-            DBBroker.getInstance().createNew(gdo);
-            DBBroker.getInstance().commitTransaction();
+            JPABroker.getInstance().createNew(gdo);
+            JPABroker.getInstance().commitTransaction();
         } catch (Exception ex) {
-            DBBroker.getInstance().rollbackTransaction();
+            JPABroker.getInstance().rollbackTransaction();
         }
     }
 
     public List<GeneralDomainObject> returnAll(GeneralDomainObject gdo) {
-        DBBroker.getInstance().beginTransaction();
-        List<GeneralDomainObject> result = DBBroker.getInstance().returnAll(gdo);
-        DBBroker.getInstance().closeTransaction();
+        JPABroker.getInstance().beginTransaction();
+        List<GeneralDomainObject> result = JPABroker.getInstance().returnAll(gdo);
+        JPABroker.getInstance().closeTransaction();
         return result;
     }
 
     public List<GeneralDomainObject> returnGDOsByCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) throws Exception {
         List<GeneralDomainObject> result;
-        DBBroker.getInstance().beginTransaction();
+        JPABroker.getInstance().beginTransaction();
         try {
-            result = DBBroker.getInstance().returnGDOforCondition(odo, mapFieldValue);
-            DBBroker.getInstance().commitTransaction();
+            result = JPABroker.getInstance().returnGDOforCondition(odo, mapFieldValue);
+            JPABroker.getInstance().commitTransaction();
             return result;
         } catch (Exception ex) {
-            DBBroker.getInstance().rollbackTransaction();
+            JPABroker.getInstance().rollbackTransaction();
             throw ex;
         }
     }
 
     public void insertNewGDO(GeneralDomainObject gdo) {
-        DBBroker.getInstance().beginTransaction();
+        JPABroker.getInstance().beginTransaction();
         try {
-            DBBroker.getInstance().createNew(gdo);
-            DBBroker.getInstance().commitTransaction();
+            JPABroker.getInstance().createNew(gdo);
+            JPABroker.getInstance().commitTransaction();
         } catch (Exception ex) {
-            DBBroker.getInstance().rollbackTransaction();
+            JPABroker.getInstance().rollbackTransaction();
         }
     }
 
     public void saveGDO(GeneralDomainObject gdo) {
-        DBBroker.getInstance().beginTransaction();
+        JPABroker.getInstance().beginTransaction();
         try {
-            DBBroker.getInstance().saveGDO(gdo);
-            DBBroker.getInstance().commitTransaction();
+            JPABroker.getInstance().saveGDO(gdo);
+            JPABroker.getInstance().commitTransaction();
         } catch (Exception ex) {
-            DBBroker.getInstance().rollbackTransaction();
+            JPABroker.getInstance().rollbackTransaction();
         }
     }
 
     public void deleteGDO(GeneralDomainObject gdo) {
-        DBBroker.getInstance().beginTransaction();
-        DBBroker.getInstance().deleteGDO(gdo);
-        DBBroker.getInstance().closeTransaction();
+        JPABroker.getInstance().beginTransaction();
+        JPABroker.getInstance().deleteGDO(gdo);
+        JPABroker.getInstance().closeTransaction();
     }
 
     public void updateGDO(GeneralDomainObject gdo) {
-        DBBroker.getInstance().beginTransaction();
-        DBBroker.getInstance().updateGDO(gdo);
-        DBBroker.getInstance().commitTransaction();
+        JPABroker.getInstance().beginTransaction();
+        JPABroker.getInstance().updateGDO(gdo);
+        JPABroker.getInstance().commitTransaction();
     }
 
     /* Ending of GeneralDomainObject calls */
@@ -119,23 +119,23 @@ public class ControllerAL {
     }
 
     public void addNewCorpus(Corpus corpus) throws Exception {
-        DBBroker.getInstance().addNewCorpus(corpus);
+        JPABroker.getInstance().addNewCorpus(corpus);
     }
 
     public List<Corpus> getAllCorpuses() {
-        return DBBroker.getInstance().getAllCorpuses();
+        return JPABroker.getInstance().getAllCorpuses();
     }
 
     public void addNewTaggedSentence(TaggedSentence ts) throws Exception {
-        DBBroker.getInstance().addNewTaggedSentence(ts);
+        JPABroker.getInstance().addNewTaggedSentence(ts);
     }
 
     public void updateCorpus(Corpus corpus) throws Exception {
-        DBBroker.getInstance().updateCorpus(corpus);
+        JPABroker.getInstance().updateCorpus(corpus);
     }
 
     public void removeCorpus(Corpus selectedCorpus) throws Exception {
-        DBBroker.getInstance().removeCorpus(selectedCorpus);
+        JPABroker.getInstance().removeCorpus(selectedCorpus);
     }
 
     public String startTraining(Corpus corpus) throws IOException {
@@ -170,14 +170,14 @@ public class ControllerAL {
     }
 
     public void saveHtmlPage(HtmlPage htmlPage) throws Exception {
-        DBBroker.getInstance().addHtmlPage(htmlPage);
+        JPABroker.getInstance().addHtmlPage(htmlPage);
     }
 
     public void saveWebsite(Website website) throws Exception {
-        DBBroker.getInstance().addWebsite(website);
+        JPABroker.getInstance().addWebsite(website);
     }
 
     public List<Website> getAddWebsites() {
-        return DBBroker.getInstance().getAllWebsites();
+        return JPABroker.getInstance().getAllWebsites();
     }
 }

@@ -24,25 +24,26 @@ import model.website.Website;
  *
  * @author Djordje Gligorijevic
  */
-public class DBBroker {
+public class JPABroker implements DatabaseBroker{
 
-    private static DBBroker instance;
+    private static JPABroker instance;
     private EntityManagerFactory emf;
     private EntityManager em;
     private static String logMessage;
 
-    private DBBroker() {
+    private JPABroker() {
         emf = Persistence.createEntityManagerFactory("webevo");
     }
 
-    public static DBBroker getInstance() {
+    public static JPABroker getInstance() {
         if (instance == null) {
-            instance = new DBBroker();
+            instance = new JPABroker();
         }
         return instance;
     }
 
     /*Beginning of GeneralDomainObject calls */
+    @Override
     public List<GeneralDomainObject> returnAll(GeneralDomainObject gdo) {
 //        if (odoList == null) {
         List<GeneralDomainObject> odoList = new ArrayList<GeneralDomainObject>();
@@ -60,6 +61,7 @@ public class DBBroker {
         return odoList;
     }
 
+    @Override
     public List<GeneralDomainObject> returnGDOforCondition(GeneralDomainObject odo, HashMap<String, Object> mapFieldValue) throws Exception {
         String query = "SELECT objd FROM " + odo.vratiImeKlase() + " objd where ";
         //Query createQuery = em.createQuery("SELECT objd FROM "+odo.vratiImeKlase()+" objd where ");
@@ -86,18 +88,29 @@ public class DBBroker {
         }
     }
 
+    @Override
     public void createNew(GeneralDomainObject odo) throws Exception {
         try {
-            System.out.println("Creating new" + odo.vratiImeKlase());
-            em.persist(odo);
-            System.out.println("Prosao persist");
-            em.flush();
-            System.out.println("Prosao flush");
-            em.refresh(odo);
-            System.out.println("Prosao refresh");
+            GeneralDomainObject oldOdo = (GeneralDomainObject) em.find(odo.vratiKlasu(), odo.vratiID());
 
-            System.out.println("kreiran novi " + odo.vratiID() + " " + odo.vratiNazivNovogObjekta());
+            if (oldOdo != null) {
+                System.out.println("Merging new" + odo.vratiImeKlase());
+                em.merge(odo);
+                System.out.println("Prosao persist");
+                em.flush();
+                System.out.println("Prosao flush");
+                em.refresh(odo);
+                System.out.println("Prosao refresh");
+            } else {
+                em.persist(odo);
+                System.out.println("Prosao persist");
+                em.flush();
+                System.out.println("Prosao flush");
+                em.refresh(odo);
+                System.out.println("Prosao refresh");
 
+                System.out.println("kreiran novi " + odo.vratiID() + " " + odo.vratiNazivNovogObjekta());
+            }
             logMessage = logMessage + "\n Uspesno kreiran " + odo.vratiNazivObjekta();
         } catch (Exception e) {
             logMessage = logMessage + "\n Greska prilikom kreiranja " + odo.vratiNazivObjekta();
@@ -105,6 +118,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public void saveGDO(GeneralDomainObject odo) throws Exception {
         try {
             em.persist(odo);
@@ -114,6 +128,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public boolean deleteGDO(GeneralDomainObject d) {
         GeneralDomainObject resultODO = em.find(d.getClass(), d.vratiID());
         System.out.println("U obrisi je getid() klase:" + d.vratiID().getClass() + ", a d.getClass() je klase:" + d.getClass());
@@ -127,6 +142,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public boolean updateGDO(GeneralDomainObject d) {
         System.out.println("Updating " + d.vratiImeKlase());
         GeneralDomainObject resultODO = em.find(d.getClass(), d.vratiID());
@@ -145,6 +161,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public boolean beginTransaction() {
         try {
             em = emf.createEntityManager();
@@ -157,6 +174,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public boolean closeTransaction() {
         try {
             em.close();
@@ -168,6 +186,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public boolean commitTransaction() {
         try {
             em.getTransaction().commit();
@@ -179,6 +198,7 @@ public class DBBroker {
         }
     }
 
+    @Override
     public boolean rollbackTransaction() {
         try {
             em.getTransaction().rollback();
@@ -191,6 +211,7 @@ public class DBBroker {
 
     }
 
+    @Override
     public int getMaxId(GeneralDomainObject gdo) {
 //        int result = (Integer) em.createQuery("select max(gdo.websiteId) from ? gdo")
 //                .setParameter(1, gdo.vratiImeKlase()).getSingleResult();
@@ -201,13 +222,19 @@ public class DBBroker {
 
     }
 
-    public User loginUser(User loginUser) {
+    @Override
+    public User loginUser(User loginUser) throws ArrayIndexOutOfBoundsException {
 //        List<User> res = em.createQuery("SELECT u FROM User u WHERE u.username=?").setParameter(1, loginUser.getUsername()).getResultList();
         List<User> res = em.createNamedQuery("User.findByUsernameAndPassword").setParameter("username", loginUser.getUsername()).setParameter("password", loginUser.getPassword()).getResultList();
         System.out.println(res.size());
-        return res.get(0);
+        try {
+            return res.get(0);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw ex;
+        }
     }
 
+    @Override
     public void registerNewUser(User regUser) throws Exception {
         List<User> resultList = em.createNamedQuery("User.findByUsername").setParameter("username", regUser.getUsername()).getResultList();
         if (resultList.size() == 1) {

@@ -4,7 +4,7 @@
  */
 package logic.login;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import exception.WrongUsernameOrPasswordException;
 import model.users.User;
 
@@ -19,13 +19,17 @@ public class Login {
         loginUser.setUsername(username);
         loginUser.setPassword(password);
 
-        DBBroker.getInstance().beginTransaction();
-        loginUser = DBBroker.getInstance().loginUser(loginUser);
+        JPABroker.getInstance().beginTransaction();
+        try {
+            loginUser = JPABroker.getInstance().loginUser(loginUser);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new WrongUsernameOrPasswordException("Wrong username or password");
+        }
         if (loginUser != null) {
-            DBBroker.getInstance().commitTransaction();
+            JPABroker.getInstance().commitTransaction();
             System.out.println("Ulogovan korisnik " + loginUser.getUsername());
         } else {
-            DBBroker.getInstance().rollbackTransaction();
+            JPABroker.getInstance().rollbackTransaction();
             System.out.println("Korisnik ne postoji");
             throw new WrongUsernameOrPasswordException("Wrong username or password");
         }

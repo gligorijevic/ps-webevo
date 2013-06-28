@@ -4,7 +4,7 @@
  */
 package view.korpus.tablemodel;
 
-import broker.DBBroker;
+import broker.JPABroker;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.corpus.TaggedSentence;
@@ -75,7 +75,7 @@ public class SingleCorpusTableModel extends AbstractTableModel {
 //                persistence.KorpusPersistence.getInstance().getKorpusFromId(taggedSentence.getKorpus().getId()).getTaggedSentenceFromKorpusById(taggedSentence.getId()).setTags(new ArrayList<>(Arrays.asList(fix.split(" "))));
                 break;
         }
-        DBBroker.getInstance().updateGDO(taggedSentence);
+        JPABroker.getInstance().updateGDO(taggedSentence);
         
         fireTableDataChanged();
     }
