@@ -7,6 +7,8 @@ package view.controller.training;
 import java.io.IOException;
 import model.corpus.Corpus;
 import storage.CorpusStorage;
+import util.RequestOntology;
+import util.TransferObject;
 import view.OpstiKontrolerKI;
 import view.training.FrmTrainingTaggerModel;
 
@@ -37,8 +39,11 @@ public class ControllerTraining extends OpstiKontrolerKI{
 
     public void startTraining() throws IOException {
         Corpus corpus = (Corpus) frmTrainingTaggerModel.getCbCorpuses().getSelectedItem();
-//        frmTrainingTaggerModel.getTxtATrainingResults().setText(ControllerAL.getInstance().startTraining(corpus));
-        //TODO
+        to=new TransferObject();
+        to.setClientObject(corpus);
+        to.setClientRequestOperation(RequestOntology.TRAIN_NLP_MODEL);
+        callSystemOperation();
+        frmTrainingTaggerModel.getTxtATrainingResults().setText(String.valueOf(to));
     }
 
     public void getCorpusesComboBox() {
