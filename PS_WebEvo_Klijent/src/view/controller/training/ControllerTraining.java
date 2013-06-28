@@ -16,11 +16,11 @@ import view.training.FrmTrainingTaggerModel;
  *
  * @author Djordje Gligorijevic
  */
-public class ControllerTraining extends OpstiKontrolerKI{
+public class ControllerTraining extends OpstiKontrolerKI {
 
     private FrmTrainingTaggerModel frmTrainingTaggerModel;
 
-    public ControllerTraining() throws IOException{
+    public ControllerTraining() throws IOException {
     }
 
     /**
@@ -39,11 +39,11 @@ public class ControllerTraining extends OpstiKontrolerKI{
 
     public void startTraining() throws IOException {
         Corpus corpus = (Corpus) frmTrainingTaggerModel.getCbCorpuses().getSelectedItem();
-        to=new TransferObject();
+        to = new TransferObject();
         to.setClientObject(corpus);
         to.setClientRequestOperation(RequestOntology.TRAIN_NLP_MODEL);
         callSystemOperation();
-        frmTrainingTaggerModel.getTxtATrainingResults().setText(String.valueOf(to));
+        frmTrainingTaggerModel.getTxtATrainingResults().setText(String.valueOf(to.getServerObject()));
     }
 
     public void getCorpusesComboBox() {

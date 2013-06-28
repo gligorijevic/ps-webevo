@@ -157,26 +157,11 @@ public class FrmDefineWebsite extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSaveHtmlPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveHtmlPageActionPerformed
-        if (!txtFWebsiteName.getText().equals("")) {
-            try {
-                Website website = new Website();
-                website.setWebsiteName(txtFWebsiteName.getText().trim());
-                website.setWebsiteDescription(txtFWebsiteDescr.getText().trim());
-                website.setWebsiteUrl(txtFWebsiteUrl.getText().trim());
-                controllerReadWebpageData.saveWebsite(website);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
-            }
-        } else {
-            try {
-                Website website = (Website) cbWeasies.getSelectedItem();
-                controllerReadWebpageData.saveWebsite(website);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
-            }
+        try {
+            controllerReadWebpageData.saveWebsite();
+        } catch (Exception ex) {
+            Logger.getLogger(FrmDefineWebsite.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_btnSaveHtmlPageActionPerformed
 
     /**

@@ -5,8 +5,11 @@
 package view.controller.webpage;
 
 import java.io.IOException;
+import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultTreeModel;
 import org.jsoup.nodes.Document;
+import util.RequestOntology;
+import util.TransferObject;
 import view.OpstiKontrolerKI;
 import view.webpage.FrmLoadWebpage;
 
@@ -14,7 +17,7 @@ import view.webpage.FrmLoadWebpage;
  *
  * @author Djordje Gligorijevic
  */
-public class ControllerLoadWebpageFromUrl extends OpstiKontrolerKI{
+public class ControllerLoadWebpageFromUrl extends OpstiKontrolerKI {
 
     private FrmLoadWebpage frmLoadWebpage;
 
@@ -36,9 +39,19 @@ public class ControllerLoadWebpageFromUrl extends OpstiKontrolerKI{
     }
 
     public void parseWebpageFromUrl() throws IOException {
-        Document webpage = null;//TODO = ControllerAL.getInstance().parseWebpageDocumentFromUrl(frmLoadWebpage.getTxtFUrl().getText().trim());
-        frmLoadWebpage.getTxtAreaHTMLCode().setText(webpage.html());
-        DefaultTreeModel dtm = null; //TODO ControllerAL.getInstance().getTreeModelFromWebpage(webpage);
+        to = new TransferObject();
+        to.setClientObject(frmLoadWebpage.getTxtFUrl().getText().trim());
+        to.setClientRequestOperation(RequestOntology.LOAD_WEBPAGE);
+        callSystemOperation();
+        String result = String.valueOf(to.getServerObject());
+        frmLoadWebpage.getTxtAreaHTMLCode().setText(result);
+
+        DefaultTreeModel dtm = null; 
+        to = new TransferObject();
+        to.setClientObject(frmLoadWebpage.getTxtFUrl().getText().trim());
+        to.setClientRequestOperation(RequestOntology.GET_WEBPAGE_TREEMODEL);
+        callSystemOperation();
+        dtm = (DefaultTreeModel) to.getServerObject();
         frmLoadWebpage.getTreeViewNodes().setModel(dtm);
     }
 

@@ -4,11 +4,7 @@
  */
 package view.training;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.corpus.Corpus;
 import view.controller.training.ControllerTraining;
 
 /**

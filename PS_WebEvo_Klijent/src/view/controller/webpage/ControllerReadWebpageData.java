@@ -7,10 +7,13 @@ package view.controller.webpage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.GeneralDomainObject;
 import model.website.HtmlPage;
 import model.website.Website;
 import org.jsoup.nodes.Document;
+import util.RequestOntology;
+import util.TransferObject;
 import view.OpstiKontrolerKI;
 import view.webpage.FrmDefineWebsite;
 import view.webpage.FrmReadWebpageData;
@@ -19,14 +22,13 @@ import view.webpage.FrmReadWebpageData;
  *
  * @author Djordje Gligorijevic
  */
-public class ControllerReadWebpageData extends OpstiKontrolerKI{
+public class ControllerReadWebpageData extends OpstiKontrolerKI {
 
     private FrmReadWebpageData frmReadWebpageData;
     private FrmDefineWebsite frmDefineWebsite;
-    private Document webpage;
     private HtmlPage htmlPage;
 
-    public ControllerReadWebpageData() throws IOException{
+    public ControllerReadWebpageData() throws IOException {
         super();
         htmlPage = new HtmlPage();
     }
@@ -40,28 +42,37 @@ public class ControllerReadWebpageData extends OpstiKontrolerKI{
     }
 
     public void parseWebpageFromUrl() throws IOException {
-        //setWebpage(ControllerAL.getInstance().parseWebpageDocumentFromUrl(frmReadWebpageData.getTxtFWebpageUrl().getText().trim()));
-        //TODO
-        frmReadWebpageData.getTxtAWebpage().setText(getWebpage().html());
+        to = new TransferObject();
+        to.setClientObject(frmReadWebpageData.getTxtFWebpageUrl().getText().trim());
+        System.out.println(frmReadWebpageData.getTxtFWebpageUrl().getText().trim());
+        to.setClientRequestOperation(RequestOntology.LOAD_WEBPAGE);
+        callSystemOperation();
+        String result = String.valueOf(to.getServerObject());
+        frmReadWebpageData.getTxtAWebpage().setText(result);
     }
 
     public void copyHtmlPageStructure() {
-        //ControllerAL.getInstance().copyHtmlPageStructure(getWebpage(), getHtmlPage());
-        //TODO
+        to = new TransferObject();
+        to.setClientObject(frmReadWebpageData.getTxtFWebpageUrl().getText().trim());
+        to.setClientRequestOperation(RequestOntology.COPY_WEBPAGE_STRUCTURE);
         System.out.println(getHtmlPage());
-        frmReadWebpageData.getLblCopyDataResult().setText("Successful copy.");
+        callSystemOperation();
+        htmlPage = (HtmlPage) to.getServerObject();
+        frmReadWebpageData.getLblCopyDataResult().setText(to.getServerMessage());
     }
 
-    public void saveCopiedHtmlPage() throws Exception {
-        //TODO
-        //ControllerAL.getInstance().saveHtmlPage(getHtmlPage());
-    }
-
-    public void saveWebsite(Website website) throws Exception {
+    public void saveWebsite() throws Exception {
+        KonvertujGrafickiObjekatUDomenskiObjekat();
+        Website website = (Website) gdo;
         website.getHtmlPageList().add(getHtmlPage());
         htmlPage.setWebsiteId(website);
-        //ControllerAL.getInstance().saveWebsite(website);
-        //TODO
+
+
+        to = new TransferObject();
+        to.setClientObject(website);
+        to.setClientRequestOperation(RequestOntology.SAVE_WEBPAGE);
+        callSystemOperation();
+        JOptionPane.showMessageDialog(frmDefineWebsite, to.getServerMessage());
     }
 
     /**
@@ -76,20 +87,6 @@ public class ControllerReadWebpageData extends OpstiKontrolerKI{
      */
     public void setFrmDefineWebsite(FrmDefineWebsite frmDefineWebsite) {
         this.frmDefineWebsite = frmDefineWebsite;
-    }
-
-    /**
-     * @return the webpage
-     */
-    public Document getWebpage() {
-        return webpage;
-    }
-
-    /**
-     * @param webpage the webpage to set
-     */
-    public void setWebpage(Document webpage) {
-        this.webpage = webpage;
     }
 
     /**
@@ -108,7 +105,13 @@ public class ControllerReadWebpageData extends OpstiKontrolerKI{
 
     public void fillCbOnFrmDefineWebsite() {
         List<Website> websites = new ArrayList<Website>();
-        List<GeneralDomainObject> rezultat = null; //TODO ControllerAL.getInstance().returnAll(new Website());
+        List<GeneralDomainObject> rezultat = null;
+        to = new TransferObject();
+        to.setClientObject(websites);
+        to.setClientRequestOperation(RequestOntology.GET_ALL_WEBSITES);
+        callSystemOperation();
+        rezultat = (List<GeneralDomainObject>) to.getServerObject();
+        System.out.println(rezultat);
         for (GeneralDomainObject generalDomainObject : rezultat) {
             websites.add((Website) generalDomainObject);
         }
@@ -117,11 +120,27 @@ public class ControllerReadWebpageData extends OpstiKontrolerKI{
 
     @Override
     public void KonvertujGrafickiObjekatUDomenskiObjekat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!frmDefineWebsite.getTxtFWebsiteName().getText().equals("")) {
+            try {
+                Website website = new Website();
+                website.setWebsiteName(frmDefineWebsite.getTxtFWebsiteName().getText().trim());
+                website.setWebsiteDescription(frmDefineWebsite.getTxtFWebsiteDescr().getText().trim());
+                website.setWebsiteUrl(frmDefineWebsite.getTxtFWebsiteUrl().getText().trim());
+                gdo = website;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmDefineWebsite, ex.getMessage());
+            }
+        } else {
+            try {
+                Website website = (Website) frmDefineWebsite.getCbWeasies().getSelectedItem();
+                gdo = website;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmDefineWebsite, ex.getMessage());
+            }
+        }
     }
 
     @Override
     public void KonvertujDomenskiObjekatUGrafickiObjekat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
