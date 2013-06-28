@@ -144,4 +144,9 @@ public class Expert implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "Expert";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return Expert.class;
+    }
 }

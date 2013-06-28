@@ -163,4 +163,9 @@ public class HtmlTagAttribute implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "HtmlTagAttribute";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return HtmlTagAttribute.class;
+    }
 }

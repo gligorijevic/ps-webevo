@@ -193,4 +193,9 @@ public class TaggedSentence implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "TaggedSentence";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return TaggedSentence.class;
+    }
 }

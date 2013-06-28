@@ -181,4 +181,9 @@ public class Website implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "Website";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return Website.class;
+    }
 }

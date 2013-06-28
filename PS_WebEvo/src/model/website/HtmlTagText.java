@@ -149,4 +149,9 @@ public class HtmlTagText implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "HtmlTagText";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return HtmlTagText.class;
+    }
 }

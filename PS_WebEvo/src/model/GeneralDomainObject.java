@@ -27,6 +27,8 @@ public interface GeneralDomainObject {
 
 String vratiImeKlase();
 
+Class vratiKlasu();
+
 String vratiNazivTabele();
 
 void prekopirajVrednostiAtributa(GeneralDomainObject gdo);

@@ -164,5 +164,10 @@ public class Speciality implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "Speciality";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return Speciality.class;
+    }
     
 }

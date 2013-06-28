@@ -131,4 +131,9 @@ public class UnpairedHtmlTag implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "UnpairedHtmlTag";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return UnpairedHtmlTag.class;
+    }
 }

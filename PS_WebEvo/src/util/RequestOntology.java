@@ -21,5 +21,7 @@ public class RequestOntology {
     public static final int REMOVE_CORPUS = 10;
     public static final int UPDATE_TAGGEDSENTENCE = 11;
     public static final int UPDATE_CORPUS = 12;
+    public static final int GET_WEBPAGE_TREEMODEL = 13;
+    public static final int COPY_WEBPAGE_STRUCTURE = 14;
     
 }

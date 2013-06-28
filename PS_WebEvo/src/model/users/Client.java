@@ -130,5 +130,10 @@ public class Client implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "Client";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return Client.class;
+    }
     
 }

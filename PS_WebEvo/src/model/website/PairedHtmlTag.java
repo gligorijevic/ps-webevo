@@ -161,4 +161,9 @@ public class PairedHtmlTag implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "PairedHtmlTag";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return PairedHtmlTag.class;
+    }
 }

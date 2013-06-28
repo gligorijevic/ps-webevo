@@ -5,7 +5,6 @@
 package model.website;
 
 import java.io.Serializable;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
@@ -202,5 +201,10 @@ public class HtmlTag implements GeneralDomainObject, Serializable {
     @Override
     public String vratiNazivObjekta() {
         return "HtmlTag";
+    }
+
+    @Override
+    public Class vratiKlasu() {
+        return HtmlTag.class;
     }
 }

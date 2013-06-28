@@ -162,5 +162,10 @@ public class Corpus implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "Corpus";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return Corpus.class;
+    }
     
 }

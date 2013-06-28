@@ -216,4 +216,9 @@ public class User implements GeneralDomainObject, Serializable {
     public String vratiNazivObjekta() {
         return "User";
     }
+
+    @Override
+    public Class vratiKlasu() {
+        return User.class;
+    }
 }
